@@ -1,0 +1,283 @@
+/* ═══════════════════════════════════════════════════════
+   LAYOUT — eDEX-UI Panel Grid System
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Main UI Container ── */
+#main-ui {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 240px 1fr 240px;
+    grid-template-rows: 42px 1fr 48px;
+    grid-template-areas:
+        "topbar   topbar   topbar"
+        "left     main     right"
+        "bottom   bottom   bottom";
+    gap: 0;
+    padding: 6px;
+    opacity: 0;
+    transform: scale(0.01);
+    transform-origin: center center;
+    transition: opacity 0.8s ease-out, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+#main-ui.activated {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ── Top Navigation Bar ── */
+#top-bar {
+    grid-area: topbar;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--panel-padding);
+    border-bottom: var(--border-width) solid var(--accent-dim);
+    background: var(--bg-panel);
+    position: relative;
+    z-index: 100;
+}
+
+#top-bar .logo {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+    white-space: nowrap;
+}
+
+/* ── Navigation Tabs (eDEX-UI skewed tabs) ── */
+#nav-tabs {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 0;
+}
+
+#nav-tabs .nav-tab {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    color: var(--accent-dim);
+    transition: all var(--transition-fast);
+    border-left: var(--border-width) solid var(--accent-ghost);
+    background: transparent;
+    transform: skewX(-15deg);
+}
+
+#nav-tabs .nav-tab span {
+    transform: skewX(15deg);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+#nav-tabs .nav-tab:hover {
+    color: var(--accent);
+    background: var(--accent-ghost);
+}
+
+#nav-tabs .nav-tab.active {
+    color: var(--bg-dark);
+    background: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 0 15px var(--accent-glow);
+    z-index: 2;
+}
+
+#nav-tabs .nav-tab.active span {
+    color: var(--bg-dark);
+}
+
+/* ── Audio Toggle ── */
+#audio-toggle {
+    font-family: var(--font-terminal);
+    font-size: 0.65rem;
+    color: var(--accent-dim);
+    cursor: pointer;
+    padding: 4px 10px;
+    border: var(--border-width) solid var(--accent-ghost);
+    transition: all var(--transition-fast);
+    letter-spacing: 0.05em;
+    background: transparent;
+    white-space: nowrap;
+}
+
+#audio-toggle:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+#audio-toggle.active {
+    color: var(--color-green);
+    border-color: var(--color-green);
+}
+
+/* ── Left Panel ── */
+#left-panel {
+    grid-area: left;
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-gap);
+    padding: var(--panel-gap);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: var(--border-width) solid var(--accent-faint);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
+}
+
+#left-panel.activated {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ── Main Shell (Center Content) ── */
+#main-shell {
+    grid-area: main;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Shell Header */
+#shell-header {
+    display: flex;
+    align-items: center;
+    padding: 6px var(--panel-padding);
+    border-bottom: var(--border-width) solid var(--accent-faint);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--accent-dim);
+    background: var(--bg-panel);
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+#shell-header .shell-path {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+#shell-header .shell-status {
+    margin-left: auto;
+    color: var(--color-green);
+}
+
+/* Shell Content */
+#shell-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--panel-padding);
+    scroll-behavior: smooth;
+}
+
+/* Sections */
+.content-section {
+    display: none;
+    animation: sectionFadeIn 0.5s ease forwards;
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes sectionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Right Panel ── */
+#right-panel {
+    grid-area: right;
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-gap);
+    padding: var(--panel-gap);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-left: var(--border-width) solid var(--accent-faint);
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+}
+
+#right-panel.activated {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ── Bottom Bar ── */
+#bottom-bar {
+    grid-area: bottom;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--panel-padding);
+    border-top: var(--border-width) solid var(--accent-dim);
+    background: var(--bg-panel);
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--accent-dim);
+}
+
+#bottom-bar .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#bottom-bar .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#bottom-bar .footer-link {
+    color: var(--accent-dim);
+    transition: color var(--transition-fast), text-shadow var(--transition-fast);
+    cursor: pointer;
+}
+
+#bottom-bar .footer-link:hover {
+    color: var(--accent);
+    text-shadow: 0 0 8px var(--accent-glow);
+}
+
+#bottom-bar .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-green);
+    display: inline-block;
+    margin-right: 6px;
+    animation: pulse-dot 2s ease infinite;
+    box-shadow: 0 0 6px var(--color-green);
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}

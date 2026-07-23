@@ -1,0 +1,204 @@
+/* ═══════════════════════════════════════════════════════
+   RESET & DESIGN TOKENS — eDEX-UI Tron Theme
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    /* ── eDEX-UI Tron Color Palette ── */
+    --color-r: 170;
+    --color-g: 207;
+    --color-b: 209;
+    --accent: rgb(var(--color-r), var(--color-g), var(--color-b));
+    --accent-dim: rgba(var(--color-r), var(--color-g), var(--color-b), 0.5);
+    --accent-faint: rgba(var(--color-r), var(--color-g), var(--color-b), 0.15);
+    --accent-ghost: rgba(var(--color-r), var(--color-g), var(--color-b), 0.07);
+    --accent-glow: rgba(var(--color-r), var(--color-g), var(--color-b), 0.3);
+
+    --bg-dark: #05080d;
+    --bg-darker: #020408;
+    --bg-panel: rgba(5, 8, 13, 0.85);
+    --bg-grid: #262828;
+    --color-black: #000000;
+    --color-light-black: #05080d;
+    --color-grey: #262828;
+    --color-red: #ff4444;
+    --color-green: #44ff88;
+    --color-yellow: #ffcc44;
+
+    /* ── Typography ── */
+    --font-terminal: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    --font-heading: 'Share Tech Mono', monospace;
+    --font-display: 'Orbitron', sans-serif;
+
+    /* ── Spacing ── */
+    --panel-padding: 1.2rem;
+    --panel-gap: 0.6rem;
+    --border-width: 1px;
+    --corner-size: 8px;
+
+    /* ── Transitions ── */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* ── CSS Reset ── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-terminal);
+    font-size: 0.85rem;
+    color: var(--accent);
+    background-color: var(--bg-dark);
+    user-select: none;
+    cursor: default;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+
+    /* eDEX-UI dot-grid background */
+    background-image:
+        radial-gradient(circle, var(--accent-ghost) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* ── Scanline Overlay ── */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10000;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+    );
+    mix-blend-mode: multiply;
+}
+
+/* ── Selection ── */
+::selection {
+    background: var(--accent-glow);
+    color: var(--accent);
+}
+
+/* ── Custom Scrollbar (eDEX-UI style) ── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(var(--color-r), var(--color-g), var(--color-b), 0.08);
+    border: 2px solid var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-dim);
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* ── Links ── */
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-fast), text-shadow var(--transition-fast);
+}
+
+a:hover {
+    color: #fff;
+    text-shadow: 0 0 8px var(--accent);
+}
+
+/* ── Lists ── */
+ul, ol {
+    list-style: none;
+}
+
+/* ── Images ── */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ── Inputs & Forms ── */
+input, textarea, button, select {
+    font-family: var(--font-terminal);
+    font-size: 0.85rem;
+    color: var(--accent);
+    background: transparent;
+    border: var(--border-width) solid var(--accent-dim);
+    outline: none;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 6px var(--accent-glow), inset 0 0 6px var(--accent-ghost);
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ── Utility Classes ── */
+.hidden {
+    display: none !important;
+}
+
+.invisible {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.text-dim {
+    opacity: 0.5;
+}
+
+.text-glow {
+    text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-ghost);
+}
+
+.mono {
+    font-family: var(--font-terminal);
+}
+
+.no-scroll {
+    overflow: hidden;
+}

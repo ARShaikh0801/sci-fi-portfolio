@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaikh Abdulrauf - Full-Stack Developer Portfolio</title>
+    <meta name="description" content="Portfolio of Shaikh Abdulrauf Asifparvez - Full-Stack Developer specializing in Django, Python, PostgreSQL, and modern web technologies. BTech ICT student at VGEC Ahmedabad.">
+    <meta name="keywords" content="Abdulrauf Shaikh, Full-Stack Developer, Django Developer, Python, Portfolio, VGEC">
+    <meta name="author" content="Shaikh Abdulrauf Asifparvez">
+    <meta name="theme-color" content="#05080d">
+    <meta property="og:title" content="Shaikh Abdulrauf - Full-Stack Developer Portfolio">
+    <meta property="og:description" content="Explore the portfolio of Abdulrauf Shaikh - Full-Stack Developer specializing in Django, Python, and modern web technologies.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>⟨⟩</text></svg>">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/boot.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     BOOT SCREEN
+     ═══════════════════════════════════════════════════ -->
+<section id="boot-screen">
+    <!-- Entry Gate (click to unlock audio + start boot) -->
+    <div id="boot-entry-gate">
+        <div class="entry-hex">⟨⟩</div>
+        <div class="entry-text">CLICK ANYWHERE TO ENTER</div>
+        <div class="entry-sub">audio · visuals · interaction</div>
+    </div>
+
+    <div id="boot-title" data-text="ABDULRAUF SHAIKH"></div>
+    <div id="boot-subtitle">FULL-STACK DEVELOPER · DJANGO SPECIALIST · BACKEND ENGINEER</div>
+
+    <!-- Face Scan Overlay (Step 2) -->
+    <div id="face-scan-overlay">
+        <div id="face-scan-frame">
+            <video id="face-scan-video" autoplay muted playsinline></video>
+            <canvas id="face-scan-fallback"></canvas>
+            <div id="face-scan-line"></div>
+            <div id="face-scan-corners">
+                <span class="corner tl"></span>
+                <span class="corner tr"></span>
+                <span class="corner bl"></span>
+                <span class="corner br"></span>
+            </div>
+        </div>
+        <div id="face-scan-status">INITIALIZING BIOMETRIC SCAN...</div>
+        <div id="face-scan-granted">ACCESS GRANTED</div>
+    </div>
+
+    <div id="boot-text"></div>
+    <div id="boot-progress-container">
+        <div id="boot-progress-bar"></div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN UI
+     ═══════════════════════════════════════════════════ -->
+<div id="main-ui">
+
+    <!-- ── TOP NAVIGATION BAR ── -->
+    <header id="top-bar">
+        <div class="logo">⟨AR⟩ SHAIKH</div>
+        <nav id="nav-tabs">
+            <div class="nav-tab active" data-section="landing"><span>HOME</span></div>
+            <div class="nav-tab" data-section="about"><span>ABOUT</span></div>
+            <div class="nav-tab" data-section="experience"><span>EXPERIENCE</span></div>
+            <div class="nav-tab" data-section="education"><span>EDUCATION</span></div>
+            <div class="nav-tab" data-section="projects"><span>PROJECTS</span></div>
+            <div class="nav-tab" data-section="skills"><span>SKILLS</span></div>
+            <div class="nav-tab" data-section="certifications"><span>CERTS</span></div>
+            <div class="nav-tab" data-section="achievements"><span>ACHIEVEMENTS</span></div>
+            <div class="nav-tab" data-section="contact"><span>CONTACT</span></div>
+            <div class="nav-tab" data-section="resume"><span>RESUME</span></div>
+        </nav>
+        <button id="audio-toggle" class="active">♫ SFX: ON</button>
+    </header>
+
+    <!-- ── LEFT PANEL (Profile + System Info) ── -->
+    <aside id="left-panel">
+
+        <!-- Profile Photo -->
+        <div class="profile-photo-container">
+            <img src="new_photo_mine.jpeg" alt="Abdulrauf Shaikh - Full-Stack Developer" loading="eager">
+        </div>
+
+        <!-- Identity Panel -->
+        <div class="panel">
+            <div class="panel-title">SYSTEM INFO</div>
+            <div class="info-row">
+                <span class="info-label">Name</span>
+                <span class="info-value">Abdulrauf</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Role</span>
+                <span class="info-value">Developer</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Type</span>
+                <span class="info-value">Full-Stack</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status</span>
+                <span class="info-value" style="color: var(--color-green);">● ACTIVE</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Location</span>
+                <span class="info-value">Mahesana, IN</span>
+            </div>
+        </div>
+
+        <!-- Clock Panel -->
+        <div class="panel">
+            <div class="panel-title">CLOCK <span class="title-tag">LOCAL</span></div>
+            <div id="clock-display" style="font-family: var(--font-display); font-size: 1.6rem; text-align: center; padding: 0.3rem 0; letter-spacing: 0.1em;">
+                <span>0</span><span>0</span><em>:</em><span>0</span><span>0</span><em>:</em><span>0</span><span>0</span>
+            </div>
+            <div id="date-display" style="text-align: center; font-size: 0.65rem; color: var(--accent-dim); letter-spacing: 0.12em; font-family: var(--font-heading);">Loading...</div>
+            <div class="separator"></div>
+            <div class="info-row">
+                <span class="info-label">Uptime</span>
+                <span class="info-value" id="uptime-display">00:00:00</span>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="panel">
+            <div class="panel-title">QUICK ACCESS</div>
+            <div class="social-links" style="flex-direction: column;">
+                <a href="arshaikh_resume.pdf" target="_blank" class="resume-btn" download>
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h6v7h6v9H6z"/></svg>
+                    DOWNLOAD RESUME
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── MAIN SHELL (Center Content Area) ── -->
+    <main id="main-shell">
+
+        <!-- Shell Header -->
+        <div id="shell-header">
+            <span>MAIN SHELL ·</span>
+            <span class="shell-path">~/home</span>
+            <span class="shell-status" style="color: var(--color-green);">CONNECTED</span>
+        </div>
+
+        <!-- Shell Content -->
+        <div id="shell-content">
+
+            <!-- ════════════ LANDING ════════════ -->
+            <section id="section-landing" class="content-section active">
+                <div class="landing-greeting">Hello, World. I am</div>
+                <h1 class="landing-name">ABDULRAUF SHAIKH</h1>
+                <div class="landing-designation" id="landing-designation"></div>
+
+                <div class="landing-intro">
+                    I am a final-year BTech ICT student at Vishwakarma Government Engineering College, Ahmedabad (CGPA: 8.39), passionate about building production-ready full-stack web applications. I specialise in Django-based backend development, having built and deployed live platforms like Articlio - a blogging platform with OAuth authentication, and WorkWhiz - a multilingual labour job portal supporting 18 Indian languages. I bring strong skills in Python, Django, PostgreSQL, Tailwind CSS, and REST APIs, combining clean backend architecture with user-friendly frontend design.
+                </div>
+
+                <div class="landing-actions">
+                    <button class="glow-btn" onclick="Navigation.navigateTo('projects')">[ VIEW PROJECTS ]</button>
+                    <button class="glow-btn" onclick="Navigation.navigateTo('contact')" style="border-color: var(--accent-faint);">[ CONTACT ME ]</button>
+                </div>
+
+                <div class="landing-social">
+                    <a href="https://github.com/ARShaikh0801" target="_blank" rel="noopener" class="social-cmd">github</a>
+                    <a href="https://www.linkedin.com/in/shaikhabdulrauf-asifparvez-b4485435a/" target="_blank" rel="noopener" class="social-cmd">linkedin</a>
+                    <a href="mailto:arauf0801@gmail.com" class="social-cmd">email</a>
+                </div>
+            </section>
+
+            <!-- ════════════ ABOUT ════════════ -->
+            <section id="section-about" class="content-section">
+                <h2 class="section-header">ABOUT ME</h2>
+                <div class="section-subheader">// System Profile Overview</div>
+
+                <div class="about-grid">
+                    <div class="about-text">
+                        I am Abdulrauf Shaikh, a full-stack web developer and final-year ICT student at VGEC Ahmedabad with a CGPA of 8.39. Over the past two years, I have independently built multiple production-ready Django applications - from e-commerce platforms and job portals to blogging platforms with OAuth, dynamic theming engines, and Bloom Filter optimizations. I work primarily with Python, Django, PostgreSQL, Tailwind CSS, and Git, and have hands-on experience with cloud deployments on Render using Supabase, Cloudinary, and WhiteNoise.
+                    </div>
+                    <div class="about-text" style="opacity: 0.8;">
+                        What sets me apart is my ability to own an entire project - from database design and backend logic to responsive UI and production deployment. I am detail-oriented, self-driven, and always focused on writing clean, maintainable code that solves real problems.
+                    </div>
+
+                    <div class="vision-mission">
+                        <div class="vm-card">
+                            <div class="vm-title">◈ Mission</div>
+                            <div class="vm-text">"To build scalable, user-centered web applications that solve real-world problems through clean code, thoughtful architecture, and continuous learning."</div>
+                        </div>
+                        <div class="vm-card">
+                            <div class="vm-title">◈ Vision</div>
+                            <div class="vm-text">"To grow into a well-rounded backend engineer who contributes to impactful products, and eventually builds technology that creates meaningful change."</div>
+                        </div>
+                    </div>
+
+                    <div class="about-buttons">
+                        <button class="glow-btn" onclick="Navigation.navigateTo('experience')">EXPERIENCE</button>
+                        <button class="glow-btn" onclick="Navigation.navigateTo('education')">EDUCATION</button>
+                        <button class="glow-btn" onclick="Navigation.navigateTo('projects')">PROJECTS</button>
+                        <button class="glow-btn" onclick="Navigation.navigateTo('skills')">SKILLS</button>
+                        <button class="glow-btn" onclick="Navigation.navigateTo('certifications')">CERTS</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════ EXPERIENCE ════════════ -->
+            <section id="section-experience" class="content-section">
+                <h2 class="section-header">WORK EXPERIENCE</h2>
+                <div class="section-subheader">// Process History Log</div>
+
+                <div class="data-card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Independent Full-Stack Developer</div>
+                            <div class="card-meta">Self-Initiated Projects · Freelance / Academic</div>
+                        </div>
+                        <div class="card-badge">JAN 2024 - PRESENT</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row" style="border: none; padding: 0.2rem 0;">
+                            <span class="info-label">Location</span>
+                            <span class="info-value">Mahesana, India</span>
+                        </div>
+                    </div>
+
+                    <div class="category-header">Responsibilities</div>
+                    <ul class="card-list">
+                        <li>Designed and developed full-stack Django web applications from scratch including database modeling, backend logic, and frontend UI</li>
+                        <li>Deployed applications on Render with PostgreSQL (Supabase), Cloudinary media storage, and WhiteNoise for static files</li>
+                        <li>Implemented OAuth authentication, REST APIs, role-based access control, and third-party API integrations</li>
+                        <li>Participated in 2 hackathons building working prototypes under time constraints</li>
+                    </ul>
+
+                    <div class="category-header">Key Achievements</div>
+                    <ul class="card-list">
+                        <li>Deployed 2 live production applications accessible publicly with full cloud configuration</li>
+                        <li>Built a multilingual platform supporting 18 Indian languages using Google Translate API</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ════════════ EDUCATION ════════════ -->
+            <section id="section-education" class="content-section">
+                <h2 class="section-header">EDUCATION</h2>
+                <div class="section-subheader">// Knowledge Base Registry</div>
+
+                <div class="education-list stagger-in">
+                    <!-- BTech -->
+                    <div class="education-card">
+                        <div class="edu-qualification">BTech in Information & Communication Technology</div>
+                        <div class="edu-institution">Vishwakarma Government Engineering College, Ahmedabad</div>
+                        <div class="edu-duration">2023 - 2027 · Full-time</div>
+                        <ul class="edu-highlights">
+                            <li>CGPA: 8.39 - consistently strong academic performance</li>
+                            <li>Coursework: DSA, OS, DBMS, OOP, Digital Logic, CN</li>
+                            <li>Active project builder with 3 full-stack deployed applications</li>
+                        </ul>
+                    </div>
+
+                    <!-- HSC -->
+                    <div class="education-card">
+                        <div class="edu-qualification">HSC (Class 12) - Science</div>
+                        <div class="edu-institution">Shree J.M. Chaudhry Sarvajanik Vidhyalay</div>
+                        <div class="edu-duration">2021 - 2023 · Full-time</div>
+                        <ul class="edu-highlights">
+                            <li>Percentage: 81.07% - Ranked 7th in the entire school</li>
+                            <li>Gujarat Secondary and Higher Secondary Education Board (GSEB)</li>
+                            <li>Strong foundation in Physics, Chemistry, and Mathematics</li>
+                        </ul>
+                    </div>
+
+                    <!-- SSC -->
+                    <div class="education-card">
+                        <div class="edu-qualification">SSC (Class 10)</div>
+                        <div class="edu-institution">Shree J.M. Chaudhry Sarvajanik Vidhyalay</div>
+                        <div class="edu-duration">2019 - 2021 · Full-time</div>
+                        <ul class="edu-highlights">
+                            <li>Percentage: 83.83%</li>
+                            <li>Gujarat Secondary Education Board (GSEB)</li>
+                            <li>Strong foundation in Mathematics and Science</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════ PROJECTS ════════════ -->
+            <section id="section-projects" class="content-section">
+                <h2 class="section-header">PROJECTS</h2>
+                <div class="section-subheader">// Deployed Modules Registry</div>
+
+                <div class="projects-grid stagger-in">
+                    <!-- Articlio -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">ARTICLIO - Blogging Platform</div>
+                                <div class="card-meta">Personal Project · Sep 2025 - Jan 2026</div>
+                            </div>
+                            <span class="card-badge live">DEPLOYED</span>
+                        </div>
+                        <div class="card-body">
+                            A production-ready blogging platform built with Django and Tailwind CSS v4, featuring multi-channel OAuth authentication via Google and GitHub, a dynamic theming engine with 5 accent themes, and advanced performance optimizations including Bloom Filter for username validation.
+                        </div>
+                        <ul class="card-list">
+                            <li>Implemented OAuth authentication (Google/GitHub) with role-based access for Reader and Author</li>
+                            <li>Built nested threaded comments, reading history with scroll progress tracking, bookmarks, and likes</li>
+                            <li>Optimized using in-memory Bloom Filter for instant username checks and session-based view tracking</li>
+                            <li>Configured CSP security headers and WhiteNoise static file caching for production</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span class="tech-tag">Django 5.2</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Tailwind CSS v4</span>
+                            <span class="tech-tag">OAuth</span>
+                            <span class="tech-tag">WhiteNoise</span>
+                            <span class="tech-tag">Render</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="https://articlio-nb11.onrender.com" target="_blank" rel="noopener" class="card-link">▸ LIVE SITE</a>
+                        </div>
+                    </div>
+
+                    <!-- WorkWhiz -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">WORKWHIZ - Labour Job Portal</div>
+                                <div class="card-meta">Personal Project · Jun 2024 - Jan 2025</div>
+                            </div>
+                            <span class="card-badge live">DEPLOYED</span>
+                        </div>
+                        <div class="card-body">
+                            A full-stack multi-role job portal connecting workers and contractors, featuring role-specific dashboards, job posting and application management, multilingual support for 18 Indian languages via Google Translate API, and full production deployment.
+                        </div>
+                        <ul class="card-list">
+                            <li>Built separate dashboards for workers and contractors with bidirectional rating system</li>
+                            <li>Integrated Google Translate API supporting 18 regional Indian languages</li>
+                            <li>Implemented secure email-based password reset (SMTP) and Cloudinary profile image uploads</li>
+                            <li>Deployed live with PostgreSQL (Supabase), WhiteNoise, and environment-based settings</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span class="tech-tag">Django 5.x</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Cloudinary</span>
+                            <span class="tech-tag">Google Translate API</span>
+                            <span class="tech-tag">Render</span>
+                            <span class="tech-tag">Supabase</span>
+                        </div>
+                        <div class="card-links">
+                            <a href="https://workwhiz.onrender.com" target="_blank" rel="noopener" class="card-link">▸ LIVE SITE</a>
+                        </div>
+                    </div>
+
+                    <!-- BuyCart -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">BUYCART - E-Commerce Platform</div>
+                                <div class="card-meta">Personal Project · Jan 2025 - Jun 2025</div>
+                            </div>
+                            <span class="card-badge">COMPLETED</span>
+                        </div>
+                        <div class="card-body">
+                            A full-stack e-commerce platform with distinct customer and dealer portals, featuring Stripe payment integration, a dedicated dealer dashboard for inventory and blog management using Quill Editor, and a mobile-first responsive UI.
+                        </div>
+                        <ul class="card-list">
+                            <li>Built separate portals for customers and dealers with role-based access control</li>
+                            <li>Integrated Stripe API for secure end-to-end payment processing</li>
+                            <li>Developed dealer dashboard with inventory management, sales tracking, and rich-text blogging</li>
+                            <li>Designed mobile-first responsive UI with Bootstrap 5</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">Bootstrap 5</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">SQLite</span>
+                            <span class="tech-tag">Stripe API</span>
+                            <span class="tech-tag">Quill Editor</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════ SKILLS ════════════ -->
+            <section id="section-skills" class="content-section">
+                <h2 class="section-header">SKILLS</h2>
+                <div class="section-subheader">// System Capabilities Matrix</div>
+
+                <div class="skills-grid">
+                    <!-- Backend -->
+                    <div class="skill-category">
+                        <div class="skill-category-title">▸ Backend Development</div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Python</span><span class="stat-value">88%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="88" data-delay="0"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Django</span><span class="stat-value">85%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="85" data-delay="80"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Django REST Framework</span><span class="stat-value">75%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="75" data-delay="160"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">REST API Design</span><span class="stat-value">78%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="78" data-delay="240"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Frontend -->
+                    <div class="skill-category">
+                        <div class="skill-category-title">▸ Frontend Development</div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">HTML5 / CSS3</span><span class="stat-value">90%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="90" data-delay="0"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">JavaScript</span><span class="stat-value">78%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="78" data-delay="80"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Tailwind CSS</span><span class="stat-value">82%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="82" data-delay="160"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Bootstrap</span><span class="stat-value">85%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="85" data-delay="240"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Databases & Cloud -->
+                    <div class="skill-category">
+                        <div class="skill-category-title">▸ Databases & Cloud</div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">PostgreSQL</span><span class="stat-value">78%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="78" data-delay="0"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">SQLite</span><span class="stat-value">85%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="85" data-delay="80"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Cloudinary</span><span class="stat-value">75%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="75" data-delay="160"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Supabase</span><span class="stat-value">72%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="72" data-delay="240"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Developer Tools -->
+                    <div class="skill-category">
+                        <div class="skill-category-title">▸ Developer Tools</div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Git & GitHub</span><span class="stat-value">85%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="85" data-delay="0"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">VS Code</span><span class="stat-value">92%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="92" data-delay="80"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Postman</span><span class="stat-value">70%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="70" data-delay="160"></div></div>
+                        </div>
+                        <div class="stat-bar">
+                            <div class="stat-header"><span class="stat-name">Linux (basic)</span><span class="stat-value">68%</span></div>
+                            <div class="stat-track"><div class="stat-fill" data-width="68" data-delay="240"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════ CERTIFICATIONS ════════════ -->
+            <section id="section-certifications" class="content-section">
+                <h2 class="section-header">CERTIFICATIONS</h2>
+                <div class="section-subheader">// Verified Credential Store</div>
+
+                <div class="certs-grid stagger-in">
+                    <!-- Scaler Python -->
+                    <div class="cert-card">
+                        <img src="certificates/scaler_python_cert.jpg" alt="Scaler Python Programming Certificate" class="cert-image" loading="lazy">
+                        <div class="cert-name">Python Programming Course</div>
+                        <div class="cert-provider">Provider: Scaler</div>
+                        <div class="cert-date">April 2025 · Never Expires</div>
+                        <div style="margin-top: 0.5rem;">
+                            <a href="https://moonshot.scaler.com/s/li/rERGu7yiwA" target="_blank" rel="noopener" class="card-link" style="font-size: 0.65rem;">▸ VERIFY</a>
+                        </div>
+                    </div>
+
+                    <!-- Tata Forage -->
+                    <div class="cert-card">
+                        <img src="certificates/tata_forage_cert.jpg" alt="Tata Data Visualisation Certificate" class="cert-image" loading="lazy">
+                        <div class="cert-name">Data Visualisation: Empowering Business with Effective Insights</div>
+                        <div class="cert-provider">Provider: Tata Group - Forage</div>
+                        <div class="cert-date">April 2025 · ID: YW2KCSMratXMmubXA</div>
+                    </div>
+
+                    <!-- LaunchEd -->
+                    <div class="cert-card">
+                        <img src="certificates/launched_webdev_cert.jpg" alt="LaunchEd Web Development Certificate" class="cert-image" loading="lazy">
+                        <div class="cert-name">Web Development Course Completion Certificate</div>
+                        <div class="cert-provider">Provider: LaunchEd (IIT Kharagpur - Kshitij)</div>
+                        <div class="cert-date">August 2025 · ID: LEDCC5428</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════ ACHIEVEMENTS ════════════ -->
+            <section id="section-achievements" class="content-section">
+                <h2 class="section-header">ACHIEVEMENTS</h2>
+                <div class="section-subheader">// Milestones built through code, consistency, and curiosity.</div>
+
+                <!-- Stat Counters -->
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-number" data-count="2" data-suffix="+">0</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" data-count="3" data-suffix="+">0</div>
+                        <div class="stat-label">Certifications</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" data-count="3">0</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" data-count="2">0</div>
+                        <div class="stat-label">Awards</div>
+                    </div>
+                </div>
+
+                <!-- Achievement Cards -->
+                <div class="achievements-list stagger-in">
+                    <div class="data-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Participant - SBS Hack The Gap 2026</div>
+                                <div class="card-meta">Shanti Business School, Ahmedabad</div>
+                            </div>
+                            <span class="card-badge">2026</span>
+                        </div>
+                        <div class="card-body">
+                            Participated in National-Level Hackathon as part of Team Innovexa, representing Vishwakarma Government Engineering College. Built a full-stack web application under competitive time constraints.
+                        </div>
+                        <img src="achievement/sbs_hackathon_certi.jpg" alt="SBS Hackathon Certificate" class="cert-image achievement-image" loading="lazy" style="max-width: 400px; margin-top: 0.8rem;">
+                    </div>
+
+                    <div class="data-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Participant - Hack With Gujarat</div>
+                                <div class="card-meta">DevXpanse</div>
+                            </div>
+                            <span class="card-badge">2025</span>
+                        </div>
+                        <div class="card-body">
+                            Participated in Hack With Gujarat hackathon, building the base version of WorkWhiz - a multi-role labour job portal using Django - under time pressure.
+                        </div>
+                        <img src="achievement/devxpanse_hackathon_certi.jpeg" alt="DevXpanse Hackathon Certificate" class="cert-image achievement-image" loading="lazy" style="max-width: 400px; margin-top: 0.8rem;">
+                    </div>
+
+                    <div class="data-card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">School Rank 7 in Class 12 Board Exams</div>
+                                <div class="card-meta">Shree J.M. Chaudhry Sarvajanik Vidhyalay</div>
+                            </div>
+                            <span class="card-badge">2023</span>
+                        </div>
+                        <div class="card-body">
+                            Ranked 7th in the entire school in the Gujarat Secondary and Higher Secondary Education Board (GSEB) Class 12 examinations with 81.07%.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════ RESUME (Web Version) ════════════ -->
+            <section id="section-resume" class="content-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h2 class="section-header" style="margin-bottom: 0;">CURRICULUM VITAE</h2>
+                        <div class="section-subheader" style="margin-bottom: 0;">// Digital Web Version of Official Resume</div>
+                    </div>
+                    <a href="arshaikh_resume.pdf" target="_blank" download class="resume-btn" style="background: var(--accent); color: var(--bg-dark); border-color: var(--accent); font-weight: 600;">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h6v7h6v9H6z"/></svg>
+                        DOWNLOAD PDF RESUME
+                    </a>
+                </div>
+
+                <div class="resume-paper">
+                    <!-- Header -->
+                    <div class="resume-header">
+                        <div class="resume-name">Shaikh Abdulrauf Asifparvez</div>
+                        <div class="resume-contact-bar">
+                            <span>📍 Mehsana, Gujarat, India</span>
+                            <span>📞 <a href="tel:+919328116358">+91-93281-16358</a></span>
+                            <span>✉ <a href="mailto:arauf0801@gmail.com">arauf0801@gmail.com</a></span>
+                            <span>💻 <a href="https://github.com/ARShaikh0801" target="_blank" rel="noopener">github.com/ARShaikh0801</a></span>
+                            <span>🔗 <a href="https://www.linkedin.com/in/shaikhabdulrauf-asifparvez-b4485435a/" target="_blank" rel="noopener">linkedin.com/in/shaikh-abdulrauf-asifparvez</a></span>
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="resume-block-title">SUMMARY</div>
+                    <div style="font-size: 0.78rem; color: var(--accent-dim); line-height: 1.7;">
+                        Final-year Information and Communication Technology student with hands-on experience building and deploying production-ready full-stack web applications using Django, PostgreSQL, and REST APIs. Built three live applications spanning blogging, e-commerce, and job-portal domains, integrating OAuth authentication, payment gateways, and multilingual support. Seeking a Full-Stack or Backend Developer internship/entry-level role.
+                    </div>
+
+                    <!-- Technical Skills -->
+                    <div class="resume-block-title">TECHNICAL SKILLS</div>
+                    <div class="resume-skills-grid">
+                        <div class="skill-row"><span class="skill-label">Languages:</span><span class="skill-val">Python, JavaScript, basic C, basic Java, basic C++</span></div>
+                        <div class="skill-row"><span class="skill-label">Frameworks:</span><span class="skill-val">Django, Django REST Framework, Bootstrap, Tailwind CSS</span></div>
+                        <div class="skill-row"><span class="skill-label">Databases:</span><span class="skill-val">PostgreSQL, SQLite, MySQL</span></div>
+                        <div class="skill-row"><span class="skill-label">Cloud & Tools:</span><span class="skill-val">Render, Supabase, Cloudinary, Git, GitHub, VS Code, Postman</span></div>
+                        <div class="skill-row" style="grid-column: 1 / -1;"><span class="skill-label">Concepts:</span><span class="skill-val">REST API Design, OAuth Authentication, Data Structures & Algorithms, OOP, DBMS, Operating Systems</span></div>
+                    </div>
+
+                    <!-- Projects -->
+                    <div class="resume-block-title">PROJECTS</div>
+
+                    <div class="data-card" style="margin-bottom: 0.8rem;">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Articlio - Blogging Platform</div>
+                                <div class="card-meta">Django 5.2, PostgreSQL, Tailwind CSS v4, OAuth (Google/GitHub)</div>
+                            </div>
+                            <span class="card-badge live">2025 - 2026</span>
+                        </div>
+                        <ul class="card-list">
+                            <li>Built and deployed a production-ready blogging platform with OAuth authentication, role-based access control (Reader/Author), and a 5-theme dynamic theming engine.</li>
+                            <li>Implemented nested comment threads, reading-progress tracking, bookmarking, and SEO-friendly dynamic slugs for content discovery.</li>
+                            <li>Improved performance using a Bloom Filter for instant username validation and session-based view tracking to prevent traffic inflation.</li>
+                            <li>Configured CSP security headers and WhiteNoise caching for production; live at <a href="https://articlio-nb11.onrender.com" target="_blank" rel="noopener">articlio-nb11.onrender.com</a>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="data-card" style="margin-bottom: 0.8rem;">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">WorkWhiz - Multi-Role Labour Job Portal</div>
+                                <div class="card-meta">Django 5.x, PostgreSQL, Cloudinary, Render</div>
+                            </div>
+                            <span class="card-badge live">2024 - 2025</span>
+                        </div>
+                        <ul class="card-list">
+                            <li>Built and deployed a full-stack job portal connecting workers and contractors with role-based dashboards, job posting, and a two-way rating system.</li>
+                            <li>Integrated Google Translate API to support 18 regional Indian languages with persistent language preference.</li>
+                            <li>Implemented secure authentication with email-based password reset, Cloudinary image uploads, and a live password-strength meter.</li>
+                            <li>Deployed in production with PostgreSQL on Supabase and environment-based configuration; live at <a href="https://workwhiz.onrender.com" target="_blank" rel="noopener">workwhiz.onrender.com</a>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="data-card" style="margin-bottom: 0.8rem;">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">BuyCart - E-Commerce Platform</div>
+                                <div class="card-meta">Django, Bootstrap 5, Stripe API, SQLite</div>
+                            </div>
+                            <span class="card-badge">2025 - 2026</span>
+                        </div>
+                        <ul class="card-list">
+                            <li>Built a full-stack e-commerce platform with separate customer and dealer portals, including product listings, cart management, and order tracking.</li>
+                            <li>Integrated Stripe API for secure end-to-end payment processing with a complete checkout flow.</li>
+                            <li>Developed a dealer dashboard for inventory management and rich-text product blogging using the Quill Editor.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="resume-block-title">EDUCATION</div>
+
+                    <div class="info-row" style="padding: 0.4rem 0;">
+                        <div>
+                            <strong style="color: var(--accent); font-family: var(--font-heading);">Vishwakarma Government Engineering College, Ahmedabad</strong>
+                            <div style="font-size: 0.72rem; color: var(--accent-dim); italic;">B.Tech in Information and Communication Technology</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="color: var(--accent); font-weight: 600;">CGPA: 8.39 / 10</span>
+                            <div style="font-size: 0.68rem; color: var(--accent-dim);">2023 - 2027</div>
+                        </div>
+                    </div>
+
+                    <div class="info-row" style="padding: 0.4rem 0;">
+                        <div>
+                            <strong style="color: var(--accent); font-family: var(--font-heading);">Shree J.M. Chaudhry Sarvajanik Vidhyalay</strong>
+                            <div style="font-size: 0.72rem; color: var(--accent-dim); italic;">HSC - Gujarat Secondary and Higher Secondary Education Board</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="color: var(--accent); font-weight: 600;">81.07% (School Rank 7)</span>
+                            <div style="font-size: 0.68rem; color: var(--accent-dim);">2023</div>
+                        </div>
+                    </div>
+
+                    <div class="info-row" style="padding: 0.4rem 0;">
+                        <div>
+                            <strong style="color: var(--accent); font-family: var(--font-heading);">Shree J.M. Chaudhry Sarvajanik Vidhyalay</strong>
+                            <div style="font-size: 0.72rem; color: var(--accent-dim); italic;">SSC - Gujarat Secondary Education Board</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="color: var(--accent); font-weight: 600;">83.83%</span>
+                            <div style="font-size: 0.68rem; color: var(--accent-dim);">2021</div>
+                        </div>
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="resume-block-title">ACHIEVEMENTS</div>
+                    <div class="info-row" style="padding: 0.3rem 0;">
+                        <div><strong style="color: var(--accent);">Participant - SBS Hack The Gap 2026</strong> <span style="color: var(--accent-dim); font-size: 0.7rem;">· National-Level Hackathon, Shanti Business School, Ahmedabad</span></div>
+                        <div style="color: var(--accent-dim); font-size: 0.7rem;">Jan 2026</div>
+                    </div>
+                    <div class="info-row" style="padding: 0.3rem 0;">
+                        <div><strong style="color: var(--accent);">Participant - Hack With Gujarat</strong> <span style="color: var(--accent-dim); font-size: 0.7rem;">· Organized by DevXpanse; built a full-stack Django web app</span></div>
+                        <div style="color: var(--accent-dim); font-size: 0.7rem;">2025</div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="resume-block-title">CERTIFICATIONS</div>
+                    <div class="info-row" style="padding: 0.3rem 0;">
+                        <div><strong style="color: var(--accent);">Python Programming Course</strong> <span style="color: var(--accent-dim); font-size: 0.7rem;">- Scaler</span></div>
+                        <div style="color: var(--accent-dim); font-size: 0.7rem;">Apr 2025</div>
+                    </div>
+                    <div class="info-row" style="padding: 0.3rem 0;">
+                        <div><strong style="color: var(--accent);">Data Visualisation: Empowering Business with Effective Insights</strong> <span style="color: var(--accent-dim); font-size: 0.7rem;">- Tata (Forage)</span></div>
+                        <div style="color: var(--accent-dim); font-size: 0.7rem;">Apr 2025</div>
+                    </div>
+                    <div class="info-row" style="padding: 0.3rem 0;">
+                        <div><strong style="color: var(--accent);">Web Development Course Completion Certificate</strong> <span style="color: var(--accent-dim); font-size: 0.7rem;">- LaunchEd</span></div>
+                        <div style="color: var(--accent-dim); font-size: 0.7rem;">Aug 2025</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════════ CONTACT ════════════ -->
+            <section id="section-contact" class="content-section">
+                <h2 class="section-header">CONTACT</h2>
+                <div class="section-subheader">// Let's Build Something Together</div>
+
+                <div class="contact-layout">
+                    <!-- Contact Form -->
+                    <div class="contact-form-side">
+                        <form id="contact-form" class="terminal-form" action="https://formspree.io/f/xpwdkjaq" method="POST">
+                            <div class="form-group">
+                                <label class="form-label" for="contact-name">Full Name</label>
+                                <input type="text" id="contact-name" name="name" class="form-input" placeholder="Enter your name..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contact-email">Email Address</label>
+                                <input type="email" id="contact-email" name="email" class="form-input" placeholder="Enter your email..." required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contact-subject">Subject</label>
+                                <input type="text" id="contact-subject" name="subject" class="form-input" placeholder="Enter subject...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contact-message">Message</label>
+                                <textarea id="contact-message" name="message" class="form-input" placeholder="Type your message..." required></textarea>
+                            </div>
+                            <button type="submit" class="form-submit">[ EXECUTE TRANSMISSION ]</button>
+                            <div class="form-status"></div>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="contact-info-side">
+                        <div class="panel">
+                            <div class="panel-title">CONNECTION ENDPOINTS</div>
+                            <div class="info-row">
+                                <span class="info-label">Email</span>
+                                <span class="info-value"><a href="mailto:arauf0801@gmail.com">arauf0801@gmail.com</a></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Phone</span>
+                                <span class="info-value"><a href="tel:+919328116358">+91-93281-16358</a></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Location</span>
+                                <span class="info-value">Mahesana, Gujarat, India</span>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-title">NETWORK LINKS</div>
+                            <div class="social-links" style="flex-direction: column;">
+                                <a href="https://www.linkedin.com/in/shaikhabdulrauf-asifparvez-b4485435a/" target="_blank" rel="noopener" class="social-link">
+                                    <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                                    LinkedIn
+                                </a>
+                                <a href="https://github.com/ARShaikh0801" target="_blank" rel="noopener" class="social-link">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                                    GitHub
+                                </a>
+                                <a href="mailto:arauf0801@gmail.com" class="social-link">
+                                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                    Email
+                                </a>
+                            </div>
+                        </div>
+
+                        <a href="arshaikh_resume.pdf" target="_blank" class="resume-btn" download style="width: 100%; justify-content: center;">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h6v7h6v9H6z"/></svg>
+                            DOWNLOAD RESUME
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /shell-content -->
+    </main>
+
+    <!-- ── RIGHT PANEL (Status + Stats) ── -->
+    <aside id="right-panel">
+
+        <!-- Network Status -->
+        <div class="panel">
+            <div class="panel-title">NETWORK STATUS <span class="title-tag">IPv4</span></div>
+            <div class="info-row">
+                <span class="info-label">State</span>
+                <span class="info-value" style="color: var(--color-green);">ONLINE</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">GitHub</span>
+                <span class="info-value"><a href="https://github.com/ARShaikh0801" target="_blank" rel="noopener">ARShaikh0801</a></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">LinkedIn</span>
+                <span class="info-value"><a href="https://www.linkedin.com/in/shaikhabdulrauf-asifparvez-b4485435a/" target="_blank" rel="noopener">Profile ↗</a></span>
+            </div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="panel">
+            <div class="panel-title">CORE STACK</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Django</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">HTML/CSS</span>
+                <span class="tech-tag">Tailwind</span>
+                <span class="tech-tag">Git</span>
+                <span class="tech-tag">REST API</span>
+            </div>
+        </div>
+
+        <!-- Stat Counters -->
+        <div class="panel">
+            <div class="panel-title">SYSTEM METRICS</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                <div class="stat-counter">
+                    <div class="counter-value">3</div>
+                    <div class="counter-label">Projects</div>
+                </div>
+                <div class="stat-counter">
+                    <div class="counter-value">3</div>
+                    <div class="counter-label">Certs</div>
+                </div>
+                <div class="stat-counter">
+                    <div class="counter-value">2+</div>
+                    <div class="counter-label">Years</div>
+                </div>
+                <div class="stat-counter">
+                    <div class="counter-value">8.39</div>
+                    <div class="counter-label">CGPA</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decorative Graph -->
+        <div class="panel">
+            <div class="panel-title">ACTIVITY <span class="title-tag">LIVE</span></div>
+            <div class="line-graph">
+                <canvas></canvas>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── BOTTOM BAR ── -->
+    <footer id="bottom-bar">
+        <div class="footer-left">
+            <span><span class="status-dot"></span>SYSTEM OPERATIONAL</span>
+            <span>Shaikh Abdulrauf Asifparvez</span>
+        </div>
+        <div class="footer-right">
+            <span style="opacity: 0.6;">Clean code. Real solutions. Always learning.</span>
+            <a href="https://github.com/ARShaikh0801" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+            <a href="https://www.linkedin.com/in/shaikhabdulrauf-asifparvez-b4485435a/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+            <a href="mailto:arauf0801@gmail.com" class="footer-link">Email</a>
+        </div>
+    </footer>
+
+</div><!-- /main-ui -->
+
+<!-- ═══════════════════════════════════════════════════
+     LIGHTBOX
+     ═══════════════════════════════════════════════════ -->
+<div id="lightbox">
+    <img src="" alt="Certificate Preview">
+    <div class="lightbox-close">[ CLOSE ]</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════ -->
+<script src="js/boot.js"></script>
+<script src="js/terminal.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/panels.js"></script>
+<script src="js/clock.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

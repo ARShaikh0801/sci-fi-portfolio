@@ -1,0 +1,774 @@
+/* ═══════════════════════════════════════════════════════
+   COMPONENTS — Reusable eDEX-UI Styled Panels & Elements
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Panel Module (eDEX-UI bordered section) ── */
+.panel {
+    border: var(--border-width) solid var(--accent-faint);
+    padding: var(--panel-padding);
+    position: relative;
+    background: var(--bg-panel);
+    transition: border-color var(--transition-medium);
+}
+
+.panel:hover {
+    border-color: var(--accent-dim);
+}
+
+/* eDEX-UI corner brackets */
+.panel::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: var(--corner-size);
+    height: var(--corner-size);
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+    pointer-events: none;
+}
+
+.panel::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: var(--corner-size);
+    height: var(--corner-size);
+    border-bottom: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+    pointer-events: none;
+}
+
+/* ── Panel Title (eDEX-UI section header) ── */
+.panel-title {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    border-bottom: var(--border-width) solid var(--accent-faint);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.panel-title .title-tag {
+    font-size: 0.6rem;
+    color: var(--accent-dim);
+    font-weight: 400;
+}
+
+/* ── Section Header (Large) ── */
+.section-header {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px var(--accent-ghost);
+}
+
+.section-subheader {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--accent-dim);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+/* ── Terminal Prompt Line ── */
+.terminal-prompt {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.7;
+}
+
+.terminal-prompt .prompt-symbol {
+    color: var(--color-green);
+    font-weight: 600;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.terminal-prompt .prompt-command {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.terminal-prompt .prompt-text {
+    color: var(--accent-dim);
+}
+
+/* ── Blinking Cursor ── */
+.cursor-blink::after {
+    content: "█";
+    animation: blink 1s step-end infinite;
+    color: var(--accent);
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+}
+
+/* ── Data Card (Project/Experience cards) ── */
+.data-card {
+    border: var(--border-width) solid var(--accent-faint);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    position: relative;
+    background: var(--accent-ghost);
+    transition: all var(--transition-medium);
+    cursor: default;
+}
+
+.data-card::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+}
+
+.data-card::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 6px;
+    height: 6px;
+    border-bottom: 2px solid var(--accent);
+    border-right: 2px solid var(--accent);
+}
+
+.data-card:hover {
+    border-color: var(--accent-dim);
+    background: var(--accent-faint);
+    box-shadow: 0 0 15px var(--accent-ghost);
+}
+
+.data-card .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.data-card .card-title {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+}
+
+.data-card .card-meta {
+    font-size: 0.7rem;
+    color: var(--accent-dim);
+    letter-spacing: 0.05em;
+}
+
+.data-card .card-badge {
+    font-size: 0.6rem;
+    padding: 2px 8px;
+    border: var(--border-width) solid var(--accent-dim);
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    white-space: nowrap;
+}
+
+.data-card .card-badge.live {
+    border-color: var(--color-green);
+    color: var(--color-green);
+    position: relative;
+    padding-left: 18px;
+}
+
+.data-card .card-badge.live::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-green);
+    animation: pulse-dot 1.5s ease infinite;
+    box-shadow: 0 0 4px var(--color-green);
+}
+
+.data-card .card-body {
+    font-size: 0.78rem;
+    color: var(--accent-dim);
+    line-height: 1.7;
+    margin-bottom: 0.6rem;
+}
+
+.data-card .card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+}
+
+.data-card .card-list li {
+    padding: 0.2rem 0;
+    font-size: 0.75rem;
+    color: var(--accent-dim);
+    position: relative;
+    padding-left: 1.2rem;
+}
+
+.data-card .card-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+}
+
+.data-card .card-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+}
+
+.data-card .tech-tag {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    background: var(--accent-ghost);
+    border: var(--border-width) solid var(--accent-faint);
+    color: var(--accent);
+    font-family: var(--font-terminal);
+    letter-spacing: 0.03em;
+}
+
+.data-card .card-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.8rem;
+}
+
+.data-card .card-link {
+    font-size: 0.7rem;
+    color: var(--accent);
+    font-family: var(--font-heading);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.data-card .card-link:hover {
+    color: #fff;
+    text-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ── Stat Bar (Skill level bar) ── */
+.stat-bar {
+    margin-bottom: 0.8rem;
+}
+
+.stat-bar .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.3rem;
+    font-size: 0.75rem;
+}
+
+.stat-bar .stat-name {
+    color: var(--accent);
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
+}
+
+.stat-bar .stat-value {
+    color: var(--accent-dim);
+    font-family: var(--font-terminal);
+    font-size: 0.7rem;
+}
+
+.stat-bar .stat-track {
+    width: 100%;
+    height: 4px;
+    background: var(--accent-ghost);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-bar .stat-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent-glow);
+    transition: width 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+}
+
+.stat-bar .stat-fill::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 2px;
+    height: 8px;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+}
+
+/* ── Glow Button ── */
+.glow-btn {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: transparent;
+    border: var(--border-width) solid var(--accent-dim);
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-medium);
+}
+
+.glow-btn:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+    box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-ghost);
+    border-color: var(--accent);
+}
+
+.glow-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.glow-btn:hover::before {
+    left: 100%;
+}
+
+/* ── Info Row ── */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    font-size: 0.72rem;
+    border-bottom: var(--border-width) dashed var(--accent-ghost);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-row .info-label {
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: var(--font-heading);
+    font-size: 0.62rem;
+}
+
+.info-row .info-value {
+    color: var(--accent);
+    text-align: right;
+    font-size: 0.7rem;
+}
+
+/* ── Category Header ── */
+.category-header {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 0.6rem 0 0.4rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    border-top: var(--border-width) dashed var(--accent-faint);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-header::before {
+    content: "//";
+    color: var(--accent-dim);
+}
+
+/* ── Profile Photo ── */
+.profile-photo-container {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 200px;
+    margin: 0 auto 0.8rem;
+    position: relative;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+    clip-path: polygon(
+        20% 0%, 80% 0%, 100% 20%, 100% 80%,
+        80% 100%, 20% 100%, 0% 80%, 0% 20%
+    );
+}
+
+.profile-photo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    clip-path: polygon(
+        20% 0%, 80% 0%, 100% 20%, 100% 80%,
+        80% 100%, 20% 100%, 0% 80%, 0% 20%
+    );
+    filter: brightness(0.9) contrast(1.1);
+    transition: filter var(--transition-medium);
+}
+
+.profile-photo-container:hover img {
+    filter: brightness(1) contrast(1);
+}
+
+/* ── Social Icon Links ── */
+.social-links {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.68rem;
+    color: var(--accent-dim);
+    padding: 4px 8px;
+    border: var(--border-width) solid var(--accent-ghost);
+    transition: all var(--transition-fast);
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    background: var(--accent-ghost);
+    text-shadow: 0 0 8px var(--accent-glow);
+}
+
+.social-link svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+/* ── Certificate / Achievement Image Card ── */
+.cert-card {
+    border: var(--border-width) solid var(--accent-faint);
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    background: var(--accent-ghost);
+    transition: all var(--transition-medium);
+}
+
+.cert-card:hover {
+    border-color: var(--accent-dim);
+    box-shadow: 0 0 15px var(--accent-ghost);
+}
+
+.cert-card .cert-image {
+    width: 100%;
+    margin-bottom: 0.6rem;
+    border: var(--border-width) solid var(--accent-faint);
+    cursor: pointer;
+    transition: transform var(--transition-medium);
+}
+
+.cert-card .cert-image:hover {
+    transform: scale(1.02);
+}
+
+.cert-card .cert-name {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.03em;
+}
+
+.cert-card .cert-provider {
+    font-size: 0.68rem;
+    color: var(--accent-dim);
+}
+
+.cert-card .cert-date {
+    font-size: 0.62rem;
+    color: var(--accent-dim);
+    margin-top: 0.3rem;
+    opacity: 0.7;
+}
+
+/* ── Image Lightbox ── */
+#lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 9998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#lightbox.active {
+    display: flex;
+}
+
+#lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border: 2px solid var(--accent-dim);
+    box-shadow: 0 0 40px var(--accent-ghost);
+}
+
+#lightbox .lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--accent);
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    border: var(--border-width) solid var(--accent-dim);
+    padding: 0.3rem 0.8rem;
+    background: var(--bg-dark);
+    transition: all var(--transition-fast);
+}
+
+#lightbox .lightbox-close:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+}
+
+/* ── Decorative Line Graph (Side panel) ── */
+.line-graph {
+    width: 100%;
+    height: 40px;
+    position: relative;
+    overflow: hidden;
+    border-top: var(--border-width) dashed var(--accent-faint);
+    border-bottom: var(--border-width) dashed var(--accent-faint);
+    margin: 0.4rem 0;
+}
+
+.line-graph canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* ── Stat Counter ── */
+.stat-counter {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.stat-counter .counter-value {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+    letter-spacing: 0.05em;
+}
+
+.stat-counter .counter-label {
+    font-family: var(--font-heading);
+    font-size: 0.58rem;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.2rem;
+}
+
+/* ── Separator ── */
+.separator {
+    width: 100%;
+    height: 1px;
+    background: var(--accent-faint);
+    margin: 0.6rem 0;
+}
+
+/* ── Form Styles (Terminal Input) ── */
+.terminal-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.terminal-form .form-label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--accent-dim);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+}
+
+.terminal-form .form-label::before {
+    content: "> ";
+    color: var(--color-green);
+}
+
+.terminal-form .form-input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    background: var(--accent-ghost);
+    border: var(--border-width) solid var(--accent-faint);
+    color: var(--accent);
+    transition: all var(--transition-fast);
+}
+
+.terminal-form .form-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-ghost);
+    background: rgba(var(--color-r), var(--color-g), var(--color-b), 0.05);
+}
+
+.terminal-form textarea.form-input {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.terminal-form .form-submit {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: transparent;
+    border: 2px solid var(--accent);
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    position: relative;
+    overflow: hidden;
+}
+
+.terminal-form .form-submit:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+    box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.terminal-form .form-status {
+    font-size: 0.7rem;
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    display: none;
+}
+
+.terminal-form .form-status.success {
+    display: block;
+    color: var(--color-green);
+    border: var(--border-width) solid var(--color-green);
+}
+
+.terminal-form .form-status.error {
+    display: block;
+    color: var(--color-red);
+    border: var(--border-width) solid var(--color-red);
+}
+
+/* ── Contact Info Grid ── */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.contact-item {
+    padding: 1rem;
+    border: var(--border-width) solid var(--accent-faint);
+    background: var(--accent-ghost);
+    transition: all var(--transition-medium);
+}
+
+.contact-item:hover {
+    border-color: var(--accent-dim);
+}
+
+.contact-item .contact-icon {
+    font-size: 0.65rem;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: var(--font-heading);
+    margin-bottom: 0.4rem;
+}
+
+.contact-item .contact-value {
+    font-size: 0.78rem;
+    color: var(--accent);
+    word-break: break-all;
+}
+
+/* ── Resume Download Button ── */
+.resume-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border: var(--border-width) solid var(--accent-dim);
+    color: var(--accent);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all var(--transition-medium);
+    cursor: pointer;
+    background: transparent;
+}
+
+.resume-btn:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.resume-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
