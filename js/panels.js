@@ -8,6 +8,7 @@ const Panels = (() => {
         setupResumeDownload();
         setupProjectExpansion();
         setupPanelHoverEffects();
+        setupDragAndDrop();
     }
 
     /* ── Activate Main UI Panels ── */
@@ -166,6 +167,73 @@ const Panels = (() => {
 
             draw();
         });
+    }
+
+    let draggedElement = null;
+
+    function setupDragAndDrop() {
+        const panels = document.querySelectorAll('.panel');
+        panels.forEach(panel => {
+            panel.setAttribute('draggable', 'true');
+
+            panel.addEventListener('dragstart', (e) => {
+                draggedElement = panel;
+                panel.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', ''); // Required for Firefox
+                if (typeof AudioFX !== 'undefined') AudioFX.play('beep');
+            });
+
+            panel.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                return false;
+            });
+
+            panel.addEventListener('dragenter', (e) => {
+                if (panel !== draggedElement) {
+                    panel.classList.add('drag-over');
+                }
+            });
+
+            panel.addEventListener('dragleave', () => {
+                panel.classList.remove('drag-over');
+            });
+
+            panel.addEventListener('dragend', () => {
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('dragging', 'drag-over'));
+                draggedElement = null;
+            });
+
+            panel.addEventListener('drop', (e) => {
+                e.stopPropagation();
+                if (draggedElement && draggedElement !== panel) {
+                    swapNodes(draggedElement, panel);
+                    if (typeof AudioFX !== 'undefined') AudioFX.play('click');
+                }
+                return false;
+            });
+        });
+    }
+
+    function swapNodes(node1, node2) {
+        const parent1 = node1.parentNode;
+        const parent2 = node2.parentNode;
+        const next1 = node1.nextSibling;
+        const next2 = node2.nextSibling;
+
+        if (parent1 === parent2 && next1 === node2) {
+            parent1.insertBefore(node2, node1);
+        } else if (parent1 === parent2 && next2 === node1) {
+            parent1.insertBefore(node1, node2);
+        } else {
+            if (next1) {
+                parent2.insertBefore(node1, next2);
+                parent1.insertBefore(node2, next1);
+            } else {
+                parent2.insertBefore(node1, next2);
+                parent1.appendChild(node2);
+            }
+        }
     }
 
     return { init, activateUI, initLineGraphs };

@@ -21,6 +21,9 @@ const App = (() => {
             Panels.init();
             Panels.initLineGraphs();
             AudioFX.init();
+            if (typeof CyberGlobe !== 'undefined') {
+                CyberGlobe.init();
+            }
 
             // Start landing typing effects
             startLandingEffects();
@@ -34,6 +37,15 @@ const App = (() => {
         // Re-trigger skill bars when skills section is opened
         if (sectionId === 'skills') {
             Stats.triggerSkillBars();
+        }
+
+        // Optimize performance by pausing globe when landing is inactive
+        if (typeof CyberGlobe !== 'undefined') {
+            if (sectionId === 'landing') {
+                CyberGlobe.init();
+            } else {
+                CyberGlobe.destroy();
+            }
         }
 
         // Play whoosh on section change

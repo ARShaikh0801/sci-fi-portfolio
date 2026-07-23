@@ -15,6 +15,33 @@
     border-color: var(--accent-dim);
 }
 
+.panel[draggable="true"] {
+    cursor: grab;
+    user-select: none;
+}
+
+.panel[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.panel.dragging {
+    opacity: 0.45;
+    border-color: var(--color-green) !important;
+    border-style: dashed;
+    box-shadow: 0 0 25px rgba(68, 255, 136, 0.3) !important;
+}
+
+.panel.dragging::before,
+.panel.dragging::after {
+    border-color: var(--color-green) !important;
+}
+
+.panel.drag-over {
+    border-color: var(--accent) !important;
+    background: rgba(var(--color-r), var(--color-g), var(--color-b), 0.06);
+    box-shadow: 0 0 20px var(--accent-ghost);
+}
+
 /* eDEX-UI corner brackets */
 .panel::before {
     content: "";
