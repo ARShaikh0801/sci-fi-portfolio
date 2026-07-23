@@ -108,6 +108,7 @@ const TerminalCmd = (() => {
         switch (mainCmd) {
             case '/help':
                 log('── COMMAND UTILITIES ──');
+                log('/retina, /scan   - Trigger ultra-realistic biometric retina scan animation');
                 log('/matrix          - Toggle the falling digital matrix code overlay');
                 log('/hack            - Start a mock profile security bypass decryption');
                 log('/theme -color    - Shift accent theme (-cyan, -green, -red, -yellow, -blue)');
@@ -116,6 +117,15 @@ const TerminalCmd = (() => {
                 log('/projects        - Route: View Systems Directory');
                 log('/contact         - Route: View Connection Endpoints');
                 log('/resume          - Route: View Resume System');
+                break;
+
+            case '/retina':
+            case '/scan':
+                log('[ BIOMETRIC SCANNER ]: INITIATING RETINAL BIOMETRIC VERIFICATION...');
+                closeDrawer();
+                if (typeof BootSequence !== 'undefined' && BootSequence.triggerRetinaScan) {
+                    BootSequence.triggerRetinaScan();
+                }
                 break;
 
             case '/clear':
