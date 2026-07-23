@@ -450,3 +450,41 @@
     flex: 1;
 }
 
+/* ── Name Glitch Animation on Home Page ── */
+body.glitch-active #section-landing .landing-name {
+    animation: nameGlitch 0.22s infinite;
+}
+
+@keyframes nameGlitch {
+    0% {
+        clip-path: inset(40% 0 61% 0);
+        transform: skew(0.3deg);
+        text-shadow: -2px 0 var(--color-red), 2px 0 var(--accent-glow);
+    }
+    20% {
+        clip-path: inset(92% 0 1% 0);
+        transform: skew(-0.8deg);
+        text-shadow: 2px -1px var(--color-green), -2px 1px var(--color-red);
+    }
+    40% {
+        clip-path: inset(15% 0 80% 0);
+        transform: skew(1.2deg);
+        text-shadow: -1px 2px var(--accent-glow), 1px -2px var(--color-red);
+    }
+    60% {
+        clip-path: inset(80% 0 5% 0);
+        transform: skew(-1.5deg);
+        text-shadow: 2px 2px var(--color-red), -2px -2px var(--color-green);
+    }
+    80% {
+        clip-path: inset(3% 0 92% 0);
+        transform: skew(0.5deg);
+        text-shadow: -2px -1px var(--accent-glow), 2px 1px var(--color-red);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+        transform: skew(0deg);
+        text-shadow: 0 0 30px var(--accent-ghost);
+    }
+}
+

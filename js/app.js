@@ -25,6 +25,14 @@ const App = (() => {
                 CyberGlobe.init();
             }
 
+            // Setup CRT filter
+            setupCrtFilter();
+
+            // Initialize terminal commands
+            if (typeof TerminalCmd !== 'undefined') {
+                TerminalCmd.init();
+            }
+
             // Start landing typing effects
             startLandingEffects();
 
@@ -127,6 +135,67 @@ const App = (() => {
                 statusEl.style.display = 'none';
             }, 5000);
         });
+    }
+
+    /* ── CRT Filters & Ambient Glitch Effect ── */
+    let crtEnabled = true;
+    let glitchInterval = null;
+
+    function setupCrtFilter() {
+        const toggle = document.getElementById('filter-toggle');
+        const overlay = document.getElementById('crt-overlay');
+
+        const updateFilterUI = () => {
+            if (toggle) {
+                toggle.classList.toggle('active', crtEnabled);
+                toggle.textContent = crtEnabled ? '📺 CRT: ON' : '📺 CRT: OFF';
+            }
+            if (overlay) {
+                overlay.className = crtEnabled ? 'crt-active' : '';
+            }
+        };
+
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                crtEnabled = !crtEnabled;
+                updateFilterUI();
+                if (typeof AudioFX !== 'undefined') AudioFX.play('click');
+
+                if (crtEnabled) {
+                    startGlitchTimer();
+                } else {
+                    stopGlitchTimer();
+                }
+            });
+        }
+
+        // Initial state
+        updateFilterUI();
+        if (crtEnabled) {
+            startGlitchTimer();
+        }
+    }
+
+    function startGlitchTimer() {
+        if (glitchInterval) clearInterval(glitchInterval);
+        glitchInterval = setInterval(() => {
+            if (!crtEnabled) return;
+
+            document.body.classList.add('glitch-active');
+            if (typeof AudioFX !== 'undefined') AudioFX.play('glitch');
+
+            setTimeout(() => {
+                document.body.classList.remove('glitch-active');
+            }, 300);
+        }, 25000);
+    }
+
+    function stopGlitchTimer() {
+        if (glitchInterval) {
+            clearInterval(glitchInterval);
+            glitchInterval = null;
+        }
+        document.body.classList.remove('glitch-active');
     }
 
     // Initialize when DOM is ready

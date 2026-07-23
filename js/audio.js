@@ -74,6 +74,9 @@ const AudioFX = (() => {
                 case 'accessGranted':
                     synthAccessGranted();
                     break;
+                case 'glitch':
+                    synthGlitch();
+                    break;
                 default:
                     synthClick();
             }
@@ -227,6 +230,49 @@ const AudioFX = (() => {
             osc.start(startTime);
             osc.stop(startTime + 0.45);
         });
+    }
+
+    /* ── Synthesized Sci-Fi Glitch Static Sound (TV Static) ── */
+    function synthGlitch() {
+        const now = audioContext.currentTime;
+        const duration = 0.35; // 350ms
+
+        // Noise buffer
+        const bufferSize = audioContext.sampleRate * duration;
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        // Fill buffer with random noise
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+
+        const noiseSource = audioContext.createBufferSource();
+        noiseSource.buffer = buffer;
+
+        // Bandpass filter to make it sound like a radio/TV static crackle
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2000, now);
+        filter.frequency.exponentialRampToValueAtTime(800, now + duration);
+        filter.Q.value = 1.5;
+
+        // Gain node to shape the envelope (crackle spikes: krr-chk-krrr)
+        const noiseGain = audioContext.createGain();
+        noiseGain.gain.setValueAtTime(0, now);
+        noiseGain.gain.linearRampToValueAtTime(0.08, now + 0.02); // Initial burst
+        noiseGain.gain.setValueAtTime(0.02, now + 0.08); // Dip
+        noiseGain.gain.linearRampToValueAtTime(0.12, now + 0.12); // Second spike
+        noiseGain.gain.setValueAtTime(0.01, now + 0.20); // Dip
+        noiseGain.gain.linearRampToValueAtTime(0.07, now + 0.24); // Third burst
+        noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+        noiseSource.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(audioContext.destination);
+
+        noiseSource.start(now);
+        noiseSource.stop(now + duration);
     }
 
     function isEnabled() {

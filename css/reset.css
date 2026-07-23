@@ -79,24 +79,86 @@ body {
     background-size: 24px 24px;
 }
 
-/* ── Scanline Overlay ── */
-body::after {
-    content: "";
+/* ── CRT Overlay & Filters ── */
+#crt-overlay {
+    display: none;
+}
+
+#crt-overlay.crt-active {
+    display: block;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     pointer-events: none;
     z-index: 10000;
     background: repeating-linear-gradient(
         0deg,
         transparent,
         transparent 2px,
-        rgba(0, 0, 0, 0.03) 2px,
-        rgba(0, 0, 0, 0.03) 4px
+        rgba(0, 0, 0, 0.05) 2px,
+        rgba(0, 0, 0, 0.05) 4px
     );
-    mix-blend-mode: multiply;
+}
+
+#crt-overlay.crt-active .crt-scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(var(--color-r), var(--color-g), var(--color-b), 0.12);
+    box-shadow: 0 0 15px rgba(var(--color-r), var(--color-g), var(--color-b), 0.3);
+    animation: scanlineSweep 14s linear infinite;
+}
+
+#crt-overlay.crt-active .crt-flicker {
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--color-r), var(--color-g), var(--color-b), 0.003);
+    animation: crtFlicker 0.15s infinite;
+}
+
+/* ── CRT Animations ── */
+@keyframes scanlineSweep {
+    0% { top: -10px; }
+    100% { top: 100%; }
+}
+
+@keyframes crtFlicker {
+    0% { opacity: 0.96; }
+    50% { opacity: 1; }
+    100% { opacity: 0.96; }
+}
+
+/* ── Chromatic Aberration Glitch ── */
+body.glitch-active {
+    animation: screenGlitch 0.22s infinite;
+}
+
+@keyframes screenGlitch {
+    0% {
+        filter: hue-rotate(0deg) contrast(1.1) brightness(1);
+        transform: translate(0, 0) skewX(0deg);
+    }
+    15% {
+        filter: hue-rotate(60deg) contrast(1.4) brightness(1.25);
+        transform: translate(-3px, 2px) skewX(0.8deg);
+    }
+    30% {
+        filter: hue-rotate(-90deg) contrast(0.85) brightness(0.9);
+        transform: translate(2px, -3px) skewX(-1.2deg);
+    }
+    45% {
+        filter: hue-rotate(110deg) contrast(1.25) brightness(1.15);
+        transform: translate(-2px, 3px) skewX(1.4deg);
+    }
+    60% {
+        filter: hue-rotate(0deg) contrast(1) brightness(1);
+        transform: translate(3px, -2px) skewX(-0.6deg);
+    }
+    100% {
+        filter: hue-rotate(0deg) contrast(1.1) brightness(1);
+        transform: translate(0, 0) skewX(0deg);
+    }
 }
 
 /* ── Selection ── */
