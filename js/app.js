@@ -33,6 +33,11 @@ const App = (() => {
                 TerminalCmd.init();
             }
 
+            // Trigger Mike AI Voice Greeting
+            if (typeof MikeAI !== 'undefined') {
+                MikeAI.startGreeting();
+            }
+
             // Start landing typing effects
             startLandingEffects();
 

@@ -77,6 +77,12 @@ const AudioFX = (() => {
                 case 'glitch':
                     synthGlitch();
                     break;
+                case 'warning':
+                    synthWarning();
+                    break;
+                case 'decrypt':
+                    synthDecryptBlip();
+                    break;
                 default:
                     synthClick();
             }
@@ -275,9 +281,118 @@ const AudioFX = (() => {
         noiseSource.stop(now + duration);
     }
 
+    /* ── Synthesized Warning Double Beep Alarm ── */
+    function synthWarning() {
+        const now = audioContext.currentTime;
+        // Two warning alarm blasts (e.g., sawtooth sweeping down)
+        for (let i = 0; i < 2; i++) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            const startTime = now + (i * 0.25);
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(450, startTime);
+            osc.frequency.linearRampToValueAtTime(300, startTime + 0.18);
+
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.08, startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + 0.22);
+        }
+    }
+
+    /* ── Synthesized Decrypt Blip (Metallic chime with crisp noise transient) ── */
+    function synthDecryptBlip() {
+        const now = audioContext.currentTime;
+        
+        // 1. Dual metallic harmonic sweep (sine tones)
+        const osc1 = audioContext.createOscillator();
+        const osc2 = audioContext.createOscillator();
+        const chimeGain = audioContext.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(2400 + Math.random() * 300, now);
+        osc1.frequency.exponentialRampToValueAtTime(1400 + Math.random() * 150, now + 0.04);
+
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1200 + Math.random() * 150, now);
+        osc2.frequency.exponentialRampToValueAtTime(700 + Math.random() * 80, now + 0.04);
+
+        chimeGain.gain.setValueAtTime(0.02, now);
+        chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+
+        osc1.connect(chimeGain);
+        osc2.connect(chimeGain);
+        chimeGain.connect(audioContext.destination);
+
+        // 2. High-pass noise burst for organic keyboard switch click
+        const bufferSize = audioContext.sampleRate * 0.015; // 15ms short click
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = audioContext.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.setValueAtTime(3200, now);
+
+        const noiseGain = audioContext.createGain();
+        noiseGain.gain.setValueAtTime(0.012, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.013);
+
+        noise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(audioContext.destination);
+
+        // Start and stop nodes
+        osc1.start(now);
+        osc2.start(now);
+        noise.start(now);
+
+        osc1.stop(now + 0.048);
+        osc2.stop(now + 0.048);
+    }
+
+    let alarmAudio = null;
+
+    function startAlarm() {
+        if (!enabled) return;
+        
+        // Stop any active alarm first
+        stopAlarm();
+
+        try {
+            alarmAudio = new Audio('audio/siren_blaring.mp3');
+            alarmAudio.loop = true;
+            alarmAudio.volume = 0.35;
+            alarmAudio.play();
+        } catch (e) {
+            console.warn("Failed to play siren_blaring.mp3:", e);
+        }
+    }
+
+    function stopAlarm() {
+        if (alarmAudio) {
+            try {
+                alarmAudio.pause();
+                alarmAudio.currentTime = 0;
+            } catch(e) {}
+            alarmAudio = null;
+        }
+    }
+
     function isEnabled() {
         return enabled;
     }
 
-    return { init, play, isEnabled, ensureAudioContext };
+    return { init, play, isEnabled, ensureAudioContext, startAlarm, stopAlarm };
 })();

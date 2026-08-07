@@ -102,29 +102,138 @@ const Boot = (() => {
             }
         }
 
-        // Step 1 Complete -> Transition to Step 2 (Face Scan)
+        // Step 1 Complete -> Transition to User Name Prompt -> Step 2 (Face Scan)
         await sleep(400);
+        await promptUserName();
+        await sleep(200);
         startStep2_FaceScan();
+    }
+
+    /* ── STEP 1.5: User Name Security Clearance Prompt ── */
+    function promptUserName() {
+        return new Promise((resolve) => {
+            // Immediately hide boot text lines and progress bar so they don't linger
+            if (bootText) {
+                bootText.style.opacity = '0';
+                bootText.style.display = 'none';
+            }
+            if (bootProgress) {
+                bootProgress.style.opacity = '0';
+                bootProgress.style.display = 'none';
+            }
+
+            // Check localStorage with 3-day expiration (3 * 24 * 60 * 60 * 1000 ms)
+            const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+            const savedData = localStorage.getItem('visitorNameData');
+
+            if (savedData) {
+                try {
+                    const parsed = JSON.parse(savedData);
+                    if (parsed && parsed.name && parsed.timestamp && (Date.now() - parsed.timestamp < THREE_DAYS_MS)) {
+                        sessionStorage.setItem('visitorName', parsed.name);
+                        if (typeof MikeAI !== 'undefined') {
+                            MikeAI.userName = parsed.name;
+                        }
+                        resolve(parsed.name);
+                        return;
+                    }
+                } catch(e) {}
+            }
+
+            const modal = document.getElementById('user-name-modal');
+            const form = document.getElementById('name-modal-form');
+            const input = document.getElementById('user-name-input');
+            
+            if (!modal) {
+                resolve('Commander');
+                return;
+            }
+
+            modal.classList.add('active');
+            setTimeout(() => input && input.focus(), 150);
+
+            const handleSubmit = (e) => {
+                if (e) e.preventDefault();
+                let name = input ? input.value.trim() : '';
+                if (!name) name = 'Commander';
+                
+                // Store in sessionStorage and localStorage with timestamp for 3 days
+                sessionStorage.setItem('visitorName', name);
+                localStorage.setItem('visitorNameData', JSON.stringify({
+                    name: name,
+                    timestamp: Date.now()
+                }));
+
+                if (typeof MikeAI !== 'undefined') {
+                    MikeAI.userName = name;
+                }
+
+                modal.classList.remove('active');
+                if (typeof AudioFX !== 'undefined') AudioFX.play('beep');
+                setTimeout(() => resolve(name), 400);
+            };
+
+            if (form) {
+                form.addEventListener('submit', handleSubmit, { once: true });
+            }
+        });
     }
 
     /* ── STEP 2: Face / Retina Scanning Animation ── */
     let webcamStream = null;
     let retinAnimFrame = null;
 
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            if (document.querySelector(`script[src="${src}"]`)) {
+                resolve();
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+
     async function startStep2_FaceScan() {
-        // Fade out boot log lines & progress bar
+        // Ensure boot log text & progress bar stay hidden
         if (bootText) {
             bootText.style.opacity = '0';
-            bootText.style.transition = 'opacity 0.4s ease';
+            bootText.style.display = 'none';
         }
-        if (bootProgress) bootProgress.style.opacity = '0';
+        if (bootProgress) {
+            bootProgress.style.opacity = '0';
+            bootProgress.style.display = 'none';
+        }
 
-        await sleep(400);
+        await sleep(200);
+
+        // Show face scan overlay immediately to avoid black screen during script loading/permission request
+        if (faceScanOverlay) faceScanOverlay.classList.add('visible');
+        if (faceScanStatus) {
+            faceScanStatus.style.color = '';
+            faceScanStatus.classList.add('visible');
+            faceScanStatus.textContent = 'CONNECTING TO BIOMETRIC CAMERA...';
+        }
+
+        let faceDetected = false;
+        let usingWebcam = false;
+        let trackingTask = null;
+        let permissionDenied = false;
+
+        // Try to load tracking.js and tracker data
+        try {
+            await loadScript("https://cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/tracking-min.js");
+            await loadScript("https://cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/data/face-min.js");
+        } catch (e) {
+            console.warn("Failed to load tracking.js library, defaulting to fake scanning/bypass.");
+        }
 
         // Request webcam access
         const video = document.getElementById('face-scan-video');
         const fallbackCanvas = document.getElementById('face-scan-fallback');
-        let usingWebcam = false;
 
         try {
             webcamStream = await navigator.mediaDevices.getUserMedia({
@@ -138,83 +247,265 @@ const Boot = (() => {
                 usingWebcam = true;
             }
         } catch (err) {
-            // Webcam denied — switch to retina/iris scan fallback
-            if (video) video.style.display = 'none';
-            if (fallbackCanvas) {
-                fallbackCanvas.style.display = 'block';
-                fallbackCanvas.width = 440;
-                fallbackCanvas.height = 440;
-                startRetinaScanAnimation(fallbackCanvas);
-            }
+            permissionDenied = true;
         }
 
-        // Show face scan overlay
-        if (faceScanOverlay) faceScanOverlay.classList.add('visible');
+        if (permissionDenied) {
+            if (video) video.style.display = 'none';
+            if (fallbackCanvas) fallbackCanvas.style.display = 'none';
+            
+            // Immediately transition to bypass decryption
+            handleDecryptionBypass(true);
+            return;
+        }
 
         // Start scanning animation
         await sleep(300);
         if (faceScanFrame) faceScanFrame.classList.add('scanning');
         if (faceScanStatus) {
             faceScanStatus.classList.add('visible');
-            faceScanStatus.textContent = usingWebcam
-                ? 'SCANNING BIOMETRIC DATA...'
-                : 'INITIATING RETINA SCAN...';
+            faceScanStatus.textContent = 'SCANNING BIOMETRIC DATA...';
         }
 
         if (typeof AudioFX !== 'undefined') AudioFX.play('beep');
 
-        await sleep(800);
-        if (faceScanStatus) faceScanStatus.textContent = usingWebcam
-            ? 'ANALYZING FACIAL FEATURES...'
-            : 'ANALYZING RETINAL PATTERN...';
-        if (typeof AudioFX !== 'undefined') AudioFX.play('type');
-
-        await sleep(800);
-        if (faceScanStatus) faceScanStatus.textContent = usingWebcam
-            ? 'MATCHING IDENTITY DATABASE...'
-            : 'MATCHING IRIS SIGNATURE...';
-        if (typeof AudioFX !== 'undefined') AudioFX.play('type');
-
-        await sleep(700);
-        if (faceScanStatus) faceScanStatus.textContent = 'VERIFICATION COMPLETE';
-        if (typeof AudioFX !== 'undefined') AudioFX.play('beep');
-
-        // Stop scanning, show verified state
-        await sleep(300);
-        if (faceScanFrame) {
-            faceScanFrame.classList.remove('scanning');
-            faceScanFrame.classList.add('verified');
+        // Setup tracking if tracking.js loaded successfully
+        if (typeof tracking !== 'undefined' && video) {
+            try {
+                const tracker = new tracking.ObjectTracker('face');
+                tracker.setInitialScale(4);
+                tracker.setStepSize(2);
+                tracker.setEdgesDensity(0.1);
+                
+                tracker.on('track', function(event) {
+                    if (event.data.length > 0) {
+                        faceDetected = true;
+                    }
+                });
+                
+                trackingTask = tracking.track('#face-scan-video', tracker);
+            } catch (trackerErr) {
+                console.warn("Error starting face tracker:", trackerErr);
+            }
         }
 
-        // Show ACCESS GRANTED
-        await sleep(400);
-        if (faceScanStatus) faceScanStatus.classList.remove('visible');
-        if (faceScanGranted) faceScanGranted.classList.add('visible');
-        if (typeof AudioFX !== 'undefined') AudioFX.play('accessGranted');
+        // Wait up to 6 seconds to detect a face
+        let secondsPassed = 0;
+        const checkInterval = 100; // check every 100ms
+        const maxWaitTime = 6000;  // 6 seconds max wait
 
-        // Hold for viewer to see ACCESS GRANTED
-        await sleep(1200);
+        while (secondsPassed < maxWaitTime && !faceDetected) {
+            await sleep(checkInterval);
+            secondsPassed += checkInterval;
 
-        // Cleanup streams & animations
-        if (webcamStream) {
-            webcamStream.getTracks().forEach(track => track.stop());
-            webcamStream = null;
+            // Display scanning messages periodically
+            if (faceScanStatus) {
+                if (secondsPassed === 1500) {
+                    faceScanStatus.textContent = 'ANALYZING FACIAL FEATURES...';
+                    if (typeof AudioFX !== 'undefined') AudioFX.play('type');
+                } else if (secondsPassed === 3000) {
+                    faceScanStatus.textContent = 'SEARCHING FOR TARGET FACE...';
+                    if (typeof AudioFX !== 'undefined') AudioFX.play('type');
+                } else if (secondsPassed === 4500) {
+                    faceScanStatus.textContent = '[WARN] NO SUBJECT DETECTED';
+                    faceScanStatus.style.color = '#ff3b30';
+                    if (typeof AudioFX !== 'undefined') AudioFX.play('beep');
+                }
+            }
         }
-        if (retinAnimFrame) {
-            cancelAnimationFrame(retinAnimFrame);
-            retinAnimFrame = null;
+
+        // Stop tracking task
+        if (trackingTask) {
+            try { trackingTask.stop(); } catch (e) {}
         }
 
-        // Fade out face scan overlay
+        // If face is found, proceed to normal ACCESS GRANTED!
+        if (faceDetected) {
+            if (faceScanStatus) {
+                faceScanStatus.style.color = ''; // reset color
+                faceScanStatus.textContent = 'MATCHING IDENTITY DATABASE...';
+            }
+            await sleep(800);
+            if (faceScanStatus) faceScanStatus.textContent = 'VERIFICATION COMPLETE';
+            if (typeof AudioFX !== 'undefined') AudioFX.play('beep');
+
+            // Stop scanning, show verified state
+            await sleep(300);
+            if (faceScanFrame) {
+                faceScanFrame.classList.remove('scanning');
+                faceScanFrame.classList.add('verified');
+            }
+
+            // Show ACCESS GRANTED
+            await sleep(400);
+            if (faceScanStatus) faceScanStatus.classList.remove('visible');
+            if (faceScanGranted) faceScanGranted.classList.add('visible');
+            if (typeof AudioFX !== 'undefined') AudioFX.play('accessGranted');
+
+            // Hold for viewer to see ACCESS GRANTED
+            await sleep(1200);
+
+            // Cleanup streams
+            if (webcamStream) {
+                webcamStream.getTracks().forEach(track => track.stop());
+                webcamStream = null;
+            }
+
+            // Fade out face scan overlay
+            if (faceScanOverlay) {
+                faceScanOverlay.style.transition = 'opacity 0.5s ease';
+                faceScanOverlay.classList.remove('visible');
+            }
+
+            await sleep(500);
+            startStep3_Decipher();
+        } else {
+            // Face NOT detected within 6 seconds -> Trigger Decryption Override!
+            handleDecryptionBypass(false);
+        }
+    }
+
+    async function handleDecryptionBypass(isPermissionDenied) {
+        // Play futuristic warning sound
+        if (typeof AudioFX !== 'undefined') {
+            AudioFX.play('warning');
+            AudioFX.startAlarm(); // Start the blaring cyber alarm loop
+        }
+
+        // Hide scanning components
+        const frame = document.getElementById('face-scan-frame');
+        const status = document.getElementById('face-scan-status');
+        const granted = document.getElementById('face-scan-granted');
+        
+        if (frame) frame.style.display = 'none';
+        if (status) status.style.display = 'none';
+        if (granted) granted.style.display = 'none';
+
+        // Show decryption override UI
+        const container = document.getElementById('decrypt-bypass-container');
+        if (container) {
+            container.style.display = 'flex';
+        }
         if (faceScanOverlay) {
-            faceScanOverlay.style.transition = 'opacity 0.5s ease';
-            faceScanOverlay.classList.remove('visible');
+            faceScanOverlay.classList.add('visible');
         }
 
-        await sleep(500);
+        // Update initial terminal message based on cause
+        const logsEl = document.getElementById('decrypt-console-logs');
+        if (logsEl) {
+            logsEl.innerHTML = isPermissionDenied
+                ? `<div class="log-fail">[ERROR] WEBCAM INTERFACE OFFLINE (PERMISSION DENIED)</div>
+                   <div>INTERFACE LOCKDOWN ACTIVE. SYSTEM SECURED.</div>
+                   <div class="blink-cursor-line">> WAITING FOR SECURE BYPASS COMMAND...</div>`
+                : `<div class="log-fail">[ERROR] BIOMETRIC VERIFICATION TIMEOUT (SUBJECT NOT DETECTED)</div>
+                   <div>INTERFACE LOCKDOWN ACTIVE. LOCAL TERMINAL SHUTDOWN.</div>
+                   <div class="blink-cursor-line">> WAITING FOR SECURE BYPASS COMMAND...</div>`;
+        }
 
-        // Proceed to Step 3 (Name Deciphering)
-        startStep3_Decipher();
+        // Voice instruction from Mike
+        if (typeof MikeAI !== 'undefined' && MikeAI.speak) {
+            const speakText = isPermissionDenied
+                ? `Attention. Webcam interface is offline. Security lockdown is active. Please click the decrypt button on your screen to bypass.`
+                : `Biometric authentication failed. I've initiated manual bypass. Please click the decrypt button to force unlock the interface.`;
+            MikeAI.speak(speakText);
+        }
+
+        // Setup button trigger
+        const decryptBtn = document.getElementById('decrypt-bypass-btn');
+        if (decryptBtn) {
+            decryptBtn.disabled = false;
+            decryptBtn.onclick = async () => {
+                decryptBtn.disabled = true;
+
+                // Stop any speaking of Mike immediately
+                if (typeof MikeAI !== 'undefined' && MikeAI.stopSpeakingImmediate) {
+                    MikeAI.stopSpeakingImmediate();
+                }
+
+                // Fetch public IP address to show in logs!
+                let ipAddress = '192.168.1.108'; // fallback local IP
+                try {
+                    const res = await fetch('https://api.ipify.org?format=json');
+                    if (res.ok) {
+                        const data = await res.json();
+                        ipAddress = data.ip;
+                    }
+                } catch (e) {}
+
+                // Play glitch click sound
+                if (typeof AudioFX !== 'undefined') AudioFX.play('glitch');
+
+                // Print logs line by line over 5 seconds
+                const logLines = [
+                    { t: `[0.0s] INITIATING DIRECT BYPASS EXPLOIT...`, c: 'log-warn' },
+                    { t: `[0.6s] CONNECTING TO NET CONTEXT...`, c: '' },
+                    { t: `[1.2s] LOCAL NET DIAGNOSTIC COMPLETE.`, c: 'log-success' },
+                    { t: `[1.8s] HOST IP CAPTURED: ${ipAddress}`, c: 'log-success' },
+                    { t: `[2.4s] SCANNING INTERFACES FOR ACTIVE PORTS [22, 80, 443]...`, c: '' },
+                    { t: `[3.0s] CAPTURING PUBLIC CRYPTO SEED BLOCK...`, c: 'log-warn' },
+                    { t: `[3.6s] SPOOFING HOST SIGNATURE MATRIX...`, c: '' },
+                    { t: `[4.2s] SYSTEM GRANTED INJECTION TOKEN SECURED.`, c: 'log-success' },
+                    { t: `[4.8s] DISARMING FIREWALL SECURITY BLOCKADE...`, c: 'log-success' },
+                    { t: `[5.0s] LOCKDOWN TERMINATED. SYSTEM AUTHORIZED.`, c: 'log-success' }
+                ];
+
+                if (logsEl) {
+                    logsEl.innerHTML = '';
+                }
+
+                for (let i = 0; i < logLines.length; i++) {
+                    const line = logLines[i];
+                    await sleep(500); // 10 lines * 500ms = 5000ms (5 seconds)
+                    
+                    if (logsEl) {
+                        const div = document.createElement('div');
+                        if (line.c) div.className = line.c;
+                        div.textContent = line.t;
+                        logsEl.appendChild(div);
+                        logsEl.scrollTop = logsEl.scrollHeight;
+                    }
+
+                    if (typeof AudioFX !== 'undefined') {
+                        AudioFX.play('decrypt'); // Cool synthesized blips instead of standard clicks
+                    }
+                }
+
+                // Stop the blaring alarm once decryption succeeds
+                if (typeof AudioFX !== 'undefined') {
+                    AudioFX.stopAlarm();
+                }
+
+                // Transition to Access Granted!
+                await sleep(500);
+                if (container) {
+                    container.style.display = 'none';
+                }
+                
+                // Show access granted
+                if (granted) {
+                    granted.style.display = 'block';
+                    granted.classList.add('visible');
+                }
+                if (typeof AudioFX !== 'undefined') AudioFX.play('accessGranted');
+
+                await sleep(1200);
+
+                // Cleanup streams
+                if (webcamStream) {
+                    webcamStream.getTracks().forEach(track => track.stop());
+                    webcamStream = null;
+                }
+
+                // Fade out face scan overlay
+                if (faceScanOverlay) {
+                    faceScanOverlay.style.transition = 'opacity 0.5s ease';
+                    faceScanOverlay.classList.remove('visible');
+                }
+
+                await sleep(500);
+                startStep3_Decipher();
+            };
+        }
     }
 
     /**

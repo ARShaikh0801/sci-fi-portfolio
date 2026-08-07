@@ -64,7 +64,7 @@
     font-family: var(--font-terminal);
     font-size: 0.6rem;
     letter-spacing: 0.2em;
-    color: var(--accent-ghost);
+    color: var(--accent-dim);
     margin-top: 0.6rem;
     text-transform: lowercase;
 }
@@ -370,4 +370,259 @@
     opacity: 1;
     transform: scale(1);
 }
+
+/* ── User Name Security Clearance Modal (Step 1.5) ── */
+.name-modal-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 8, 13, 0.92);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.name-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.name-modal-box {
+    width: 90%;
+    max-width: 520px;
+    background: rgba(8, 14, 24, 0.95);
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 40px var(--accent-ghost), inset 0 0 20px rgba(0, 229, 255, 0.05);
+    padding: 2.2rem 2rem;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    text-align: center;
+    position: relative;
+    transform: scale(0.92);
+    transition: transform 0.4s ease;
+}
+
+.name-modal-overlay.active .name-modal-box {
+    transform: scale(1);
+}
+
+.name-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+
+.name-modal-icon {
+    font-size: 1.4rem;
+    color: var(--accent);
+    animation: pulse 2s infinite;
+}
+
+.name-modal-title {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+.name-modal-prompt {
+    font-family: var(--font-terminal);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--accent-dim);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.name-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--accent-dim);
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.name-input-wrapper:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.name-input-prefix {
+    font-family: var(--font-terminal);
+    color: var(--accent);
+    font-weight: bold;
+    margin-right: 0.8rem;
+    font-size: 1rem;
+}
+
+#user-name-input {
+    flex: 1;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #ffffff;
+    font-family: var(--font-terminal);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+}
+
+#user-name-input:focus,
+#user-name-input:active {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#user-name-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.name-modal-btn {
+    width: 100%;
+    background: rgba(0, 229, 255, 0.12);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    padding: 0.85rem 1.5rem;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: all 0.3s ease;
+}
+
+.name-modal-btn:hover {
+    background: var(--accent);
+    color: #05080d;
+    box-shadow: 0 0 25px var(--accent-glow);
+}
+
+/* ── Decrypt Bypass Terminal Panel ── */
+#decrypt-bypass-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 460px;
+    background: rgba(2, 5, 13, 0.95);
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.15), inset 0 0 20px rgba(0, 229, 255, 0.05);
+    border-radius: 4px;
+    padding: 1.5rem;
+    z-index: 12;
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+}
+
+.decrypt-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.decrypt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.25);
+    padding-bottom: 0.6rem;
+}
+
+.warning-blink {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: #ff3b30;
+    text-shadow: 0 0 10px rgba(255, 59, 48, 0.4);
+    animation: decryptBlink 1s infinite alternate;
+}
+
+.auth-mode {
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    opacity: 0.7;
+}
+
+.decrypt-console {
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(0, 229, 255, 0.15);
+    border-radius: 2px;
+    height: 160px;
+    padding: 0.85rem;
+    font-family: var(--font-terminal);
+    font-size: 0.65rem;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    overflow-y: auto;
+    text-align: left;
+}
+
+.decrypt-console div {
+    margin-bottom: 0.4rem;
+}
+
+.decrypt-console .log-success {
+    color: var(--color-green);
+    text-shadow: 0 0 5px rgba(68, 255, 136, 0.3);
+}
+
+.decrypt-console .log-warn {
+    color: #ffd60a;
+}
+
+.decrypt-console .log-fail {
+    color: #ff453a;
+}
+
+.blink-cursor-line::after {
+    content: '_';
+    animation: decryptBlink 0.8s infinite;
+}
+
+.decrypt-btn {
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    padding: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: all 0.3s ease;
+}
+
+.decrypt-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: #02050d;
+    box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.decrypt-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes decryptBlink {
+    0% { opacity: 0.2; }
+    100% { opacity: 1; }
+}
+
 

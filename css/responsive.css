@@ -171,7 +171,8 @@
         grid-template-columns: 1fr;
     }
 
-    #section-certifications .certs-grid {
+    #section-certifications .certs-grid,
+    #section-achievements .certs-grid {
         grid-template-columns: 1fr;
     }
 

@@ -30,9 +30,27 @@
 <section id="boot-screen">
     <!-- Entry Gate (click to unlock audio + start boot) -->
     <div id="boot-entry-gate">
-        <div class="entry-hex">⟨⟩</div>
+        <div class="entry-hex">⟨AR⟩</div>
         <div class="entry-text">CLICK ANYWHERE TO ENTER</div>
         <div class="entry-sub">audio · visuals · interaction</div>
+    </div>
+
+    <!-- User Name Authentication Modal (Step 1.5 - Before Scan) -->
+    <div id="user-name-modal" class="name-modal-overlay">
+        <div class="name-modal-box">
+            <div class="name-modal-header">
+                <span class="name-modal-icon">⟨🛡️⟩</span>
+                <span class="name-modal-title">USER AUTHENTICATION GATE</span>
+            </div>
+            <p class="name-modal-prompt">IDENTIFY YOURSELF COMMANDER. ENTER YOUR NAME TO INITIATE BIOMETRIC SCAN:</p>
+            <form id="name-modal-form" onsubmit="return false;">
+                <div class="name-input-wrapper">
+                    <span class="name-input-prefix">&gt;</span>
+                    <input type="text" id="user-name-input" placeholder="Enter your name..." autocomplete="off" maxlength="30" autofocus>
+                </div>
+                <button type="submit" id="name-modal-submit" class="name-modal-btn">PROCEED TO BIOMETRIC SCAN ➔</button>
+            </form>
+        </div>
     </div>
 
     <div id="boot-title" data-text="ABDULRAUF SHAIKH"></div>
@@ -53,6 +71,24 @@
         </div>
         <div id="face-scan-status">INITIALIZING BIOMETRIC SCAN...</div>
         <div id="face-scan-granted">ACCESS GRANTED</div>
+
+        <!-- Decryption Bypass Window (hidden by default) -->
+        <div id="decrypt-bypass-container">
+            <div class="decrypt-box">
+                <div class="decrypt-header">
+                    <span class="warning-blink">⚠ SYSTEM OVERRIDE ACTIVE</span>
+                    <span class="auth-mode">BYPASS TERMINAL</span>
+                </div>
+                <div class="decrypt-console" id="decrypt-console-logs">
+                    <div>HOST CONFIG: UNRESOLVED HANDSHAKE</div>
+                    <div>HARDWARE LOCK: WEBCAM OFFLINE OR SUBJECT TIMEOUT</div>
+                    <div class="blink-cursor-line">> WAITING FOR AUTH COMMAND...</div>
+                </div>
+                <button type="button" id="decrypt-bypass-btn" class="decrypt-btn">
+                    <span class="glitch-text" data-text="DECRYPT SIGNATURE KEYS">DECRYPT SIGNATURE KEYS</span>
+                </button>
+            </div>
+        </div>
     </div>
 
     <div id="boot-text"></div>
@@ -551,45 +587,36 @@
                     </div>
                 </div>
 
-                <!-- Achievement Cards -->
-                <div class="achievements-list stagger-in">
-                    <div class="data-card">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">Participant - SBS Hack The Gap 2026</div>
-                                <div class="card-meta">Shanti Business School, Ahmedabad</div>
-                            </div>
-                            <span class="card-badge">2026</span>
-                        </div>
-                        <div class="card-body">
+                <!-- Achievement Cards Grid with Full Descriptions -->
+                <div class="certs-grid stagger-in">
+                    <!-- SBS Hackathon -->
+                    <div class="cert-card">
+                        <img src="achievement/sbs_hackathon_certi.jpg" alt="SBS Hackathon Certificate" class="cert-image achievement-image" loading="lazy">
+                        <div class="cert-name">Participant - SBS Hack The Gap 2026</div>
+                        <div class="cert-provider">Organization: Shanti Business School, Ahmedabad</div>
+                        <div class="cert-date">2026 · Team Innovexa</div>
+                        <div class="card-body" style="margin-top: 0.6rem; font-size: 0.76rem; color: var(--accent-dim); line-height: 1.6;">
                             Participated in National-Level Hackathon as part of Team Innovexa, representing Vishwakarma Government Engineering College. Built a full-stack web application under competitive time constraints.
                         </div>
-                        <img src="achievement/sbs_hackathon_certi.jpg" alt="SBS Hackathon Certificate" class="cert-image achievement-image" loading="lazy" style="max-width: 400px; margin-top: 0.8rem;">
                     </div>
 
-                    <div class="data-card">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">Participant - Hack With Gujarat</div>
-                                <div class="card-meta">DevXpanse</div>
-                            </div>
-                            <span class="card-badge">2025</span>
-                        </div>
-                        <div class="card-body">
+                    <!-- Hack With Gujarat -->
+                    <div class="cert-card">
+                        <img src="achievement/devxpanse_hackathon_certi.jpeg" alt="DevXpanse Hackathon Certificate" class="cert-image achievement-image" loading="lazy">
+                        <div class="cert-name">Participant - Hack With Gujarat</div>
+                        <div class="cert-provider">Organization: DevXpanse</div>
+                        <div class="cert-date">2025 · WorkWhiz Prototype</div>
+                        <div class="card-body" style="margin-top: 0.6rem; font-size: 0.76rem; color: var(--accent-dim); line-height: 1.6;">
                             Participated in Hack With Gujarat hackathon, building the base version of WorkWhiz - a multi-role labour job portal using Django - under time pressure.
                         </div>
-                        <img src="achievement/devxpanse_hackathon_certi.jpeg" alt="DevXpanse Hackathon Certificate" class="cert-image achievement-image" loading="lazy" style="max-width: 400px; margin-top: 0.8rem;">
                     </div>
 
-                    <div class="data-card">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">School Rank 7 in Class 12 Board Exams</div>
-                                <div class="card-meta">Shree J.M. Chaudhry Sarvajanik Vidhyalay</div>
-                            </div>
-                            <span class="card-badge">2023</span>
-                        </div>
-                        <div class="card-body">
+                    <!-- School Rank 7 -->
+                    <div class="cert-card">
+                        <div class="cert-name" style="font-size: 0.85rem; margin-top: 0.4rem;">School Rank 7 in Class 12 Board Exams</div>
+                        <div class="cert-provider">Institution: Shree J.M. Chaudhry Sarvajanik Vidhyalay</div>
+                        <div class="cert-date">2023 · GSEB Board</div>
+                        <div class="card-body" style="margin-top: 0.6rem; font-size: 0.76rem; color: var(--accent-dim); line-height: 1.6;">
                             Ranked 7th in the entire school in the Gujarat Secondary and Higher Secondary Education Board (GSEB) Class 12 examinations with 81.07%.
                         </div>
                     </div>
@@ -923,6 +950,61 @@
         </div>
     </footer>
 
+    <!-- ── DRAGGABLE FLOATING CIRCULAR ORB BUTTON ── -->
+    <div id="mike-orb" class="mike-orb-button" title="Click to talk with Mike AI (Drag to move)">
+        <canvas id="mike-audio-canvas" width="60" height="60"></canvas>
+        <div class="mike-orb-badge" id="mike-orb-badge">AI</div>
+    </div>
+
+    <!-- ── TALKING AI 'MIKE' POPUP MODAL ── -->
+    <div id="mike-ai-modal" class="mike-modal-container hidden">
+        <div class="mike-hud-header">
+            <div class="mike-avatar-wrapper">
+                <div class="mike-core-pulse"></div>
+            </div>
+            <div class="mike-hud-info">
+                <div class="mike-title-row">
+                    <span class="mike-name">MIKE AI</span>
+                    <span class="mike-status-badge" id="mike-status-badge">READY</span>
+                </div>
+                <div class="mike-sub">FRIENDLY VOICE ASSISTANT</div>
+            </div>
+            <div class="mike-controls">
+                <button id="mike-stop-btn" class="mike-btn stop-btn hidden" title="Interrupt / Stop AI Speech and Start Listening" onclick="MikeAI.stopSpeakingImmediate()">
+                    <svg viewBox="0 0 24 24" class="stop-icon"><path fill="currentColor" d="M6 6h12v12H6z"/></svg>
+                </button>
+                <button id="mike-mic-btn" class="mike-btn mic-btn" title="Toggle Voice Recognition (Speak to Mike)">
+                    <svg viewBox="0 0 24 24" class="mic-icon"><path fill="currentColor" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path fill="currentColor" d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                </button>
+                <button id="mike-mute-btn" class="mike-btn mute-btn" title="Toggle Voice Speech Output">
+                    <svg viewBox="0 0 24 24" class="speaker-icon"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                </button>
+                <button id="mike-close-btn" class="mike-btn close-btn" title="Close Modal">✕</button>
+            </div>
+        </div>
+
+        <div class="mike-hud-body" id="mike-hud-body">
+            <div id="mike-transcript-box" class="mike-transcript-box">
+                <div class="mike-speech-bubble" id="mike-speech-bubble">Initializing voice assistant...</div>
+            </div>
+
+            <!-- Text Input Form for Typing -->
+            <form id="mike-text-form" class="mike-text-form" onsubmit="event.preventDefault(); MikeAI.submitTextInput();">
+                <input type="text" id="mike-text-input" class="mike-text-input" placeholder="Type a message or question..." autocomplete="off">
+                <button type="submit" class="mike-send-btn" title="Send message to Mike">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </form>
+
+            <div class="mike-suggestions">
+                <span class="mike-chip" onclick="MikeAI.handleUserQuery('What can you do?')">"What can you do?"</span>
+                <span class="mike-chip" onclick="MikeAI.handleUserQuery('Show me projects')">"Projects"</span>
+                <span class="mike-chip" onclick="MikeAI.handleUserQuery('What are your skills?')">"Skills"</span>
+                <span class="mike-chip" onclick="MikeAI.handleUserQuery('Tell me about experience')">"Experience"</span>
+            </div>
+        </div>
+    </div>
+
     <!-- ── Matrix Rain Overlay Canvas ── -->
     <canvas id="matrix-canvas"></canvas>
 
@@ -948,6 +1030,7 @@
 <script src="js/audio.js"></script>
 <script src="js/globe.js"></script>
 <script src="js/terminal-cmd.js"></script>
+<script src="js/mike-ai.js"></script>
 <script src="js/app.js"></script>
 
 </body>

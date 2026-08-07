@@ -73,6 +73,12 @@ const Navigation = (() => {
                 section.style.animation = 'none';
                 section.offsetHeight; // force reflow
                 section.style.animation = 'sectionFadeIn 0.5s ease forwards';
+
+                // Stagger card/panel reveal animations in the newly active section
+                const cards = section.querySelectorAll('.data-card, .panel');
+                cards.forEach((card, idx) => {
+                    card.style.animationDelay = `${0.05 + idx * 0.12}s`;
+                });
             } else {
                 section.classList.remove('active');
             }
