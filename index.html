@@ -24,6 +24,26 @@
 </head>
 <body>
 
+<!-- ── MOBILE SCREEN RESTRICTION OVERLAY ── -->
+<div id="mobile-restriction-overlay">
+    <div class="restriction-box">
+        <div class="restriction-header">
+            <span class="warning-icon">⚠</span>
+            <span class="header-title">SYSTEM ACCESS DENIED</span>
+        </div>
+        <div class="restriction-content">
+            <div class="scanner-line"></div>
+            <h3>VIEWPORT LIMITATION EFFECT</h3>
+            <p>This high-fidelity sci-fi terminal emulator requires a display width of <strong>768px</strong> or greater (Tablet/Desktop mode).</p>
+            <p>Mobile device connection is currently restricted to prevent UI scaling breakdown.</p>
+            <div class="restriction-footer">
+                <span class="blinking-dot"></span>
+                <span>PLEASE RE-ACCESS VIA TABLET OR DESKTOP DEVICE</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════
      BOOT SCREEN
      ═══════════════════════════════════════════════════ -->
@@ -950,6 +970,8 @@
         </div>
     </footer>
 
+</div><!-- /main-ui -->
+
     <!-- ── DRAGGABLE FLOATING CIRCULAR ORB BUTTON ── -->
     <div id="mike-orb" class="mike-orb-button" title="Click to talk with Mike AI (Drag to move)">
         <canvas id="mike-audio-canvas" width="60" height="60"></canvas>
@@ -1007,8 +1029,6 @@
 
     <!-- ── Matrix Rain Overlay Canvas ── -->
     <canvas id="matrix-canvas"></canvas>
-
-</div><!-- /main-ui -->
 
 <!-- ═══════════════════════════════════════════════════
      LIGHTBOX

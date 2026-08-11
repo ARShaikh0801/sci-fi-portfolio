@@ -236,10 +236,14 @@ const Boot = (() => {
         const fallbackCanvas = document.getElementById('face-scan-fallback');
 
         try {
-            webcamStream = await navigator.mediaDevices.getUserMedia({
+            const getUserMediaPromise = navigator.mediaDevices.getUserMedia({
                 video: { facingMode: 'user', width: 240, height: 300 },
                 audio: false
             });
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Webcam access timeout')), 2000)
+            );
+            webcamStream = await Promise.race([getUserMediaPromise, timeoutPromise]);
             if (video) {
                 video.srcObject = webcamStream;
                 video.style.display = 'block';

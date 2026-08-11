@@ -203,10 +203,22 @@ const Panels = (() => {
 
     function setupDragAndDrop() {
         const panels = document.querySelectorAll('.panel');
-        panels.forEach(panel => {
-            panel.setAttribute('draggable', 'true');
+        const updateDraggableState = () => {
+            const isMobile = window.innerWidth <= 768;
+            panels.forEach(panel => {
+                panel.setAttribute('draggable', isMobile ? 'false' : 'true');
+            });
+        };
 
+        updateDraggableState();
+        window.addEventListener('resize', updateDraggableState);
+
+        panels.forEach(panel => {
             panel.addEventListener('dragstart', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    return;
+                }
                 draggedElement = panel;
                 panel.classList.add('dragging');
                 e.dataTransfer.effectAllowed = 'move';
@@ -215,17 +227,20 @@ const Panels = (() => {
             });
 
             panel.addEventListener('dragover', (e) => {
+                if (window.innerWidth <= 768) return;
                 e.preventDefault();
                 return false;
             });
 
             panel.addEventListener('dragenter', (e) => {
+                if (window.innerWidth <= 768) return;
                 if (panel !== draggedElement) {
                     panel.classList.add('drag-over');
                 }
             });
 
             panel.addEventListener('dragleave', () => {
+                if (window.innerWidth <= 768) return;
                 panel.classList.remove('drag-over');
             });
 
@@ -235,6 +250,7 @@ const Panels = (() => {
             });
 
             panel.addEventListener('drop', (e) => {
+                if (window.innerWidth <= 768) return;
                 e.stopPropagation();
                 if (draggedElement && draggedElement !== panel) {
                     swapNodes(draggedElement, panel);

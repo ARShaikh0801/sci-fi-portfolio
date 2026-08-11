@@ -116,11 +116,16 @@ const MikeAI = (() => {
     function setupOrbDraggable() {
         if (!orbBtn) return;
 
+        let startX, startY;
+
         const onPointerDown = (e) => {
             isDragging = true;
             hasMoved = false;
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            startX = clientX;
+            startY = clientY;
 
             const rect = orbBtn.getBoundingClientRect();
             dragStartX = clientX - rect.left;
@@ -136,6 +141,11 @@ const MikeAI = (() => {
             if (!isDragging) return;
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            const dist = Math.hypot(clientX - startX, clientY - startY);
+            if (dist > 5) {
+                hasMoved = true;
+            }
 
             let left = clientX - dragStartX;
             let top = clientY - dragStartY;
@@ -167,6 +177,20 @@ const MikeAI = (() => {
 
         orbBtn.addEventListener('mousedown', onPointerDown);
         orbBtn.addEventListener('touchstart', onPointerDown, { passive: false });
+
+        window.addEventListener('resize', () => {
+            if (!orbBtn.style.left || orbBtn.style.left === 'auto') return;
+            const maxLeft = window.innerWidth - orbBtn.offsetWidth;
+            const maxTop = window.innerHeight - orbBtn.offsetHeight;
+            let currentLeft = parseFloat(orbBtn.style.left);
+            let currentTop = parseFloat(orbBtn.style.top);
+
+            currentLeft = Math.max(10, Math.min(maxLeft - 10, currentLeft));
+            currentTop = Math.max(10, Math.min(maxTop - 10, currentTop));
+
+            orbBtn.style.left = `${currentLeft}px`;
+            orbBtn.style.top = `${currentTop}px`;
+        });
     }
 
     function positionModalNearOrb(left, top) {

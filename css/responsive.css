@@ -1,6 +1,102 @@
-/* ═══════════════════════════════════════════════════════
-   RESPONSIVE — Mobile & Tablet Breakpoints
-   ═══════════════════════════════════════════════════════ */
+/* ── Mobile Restriction Overlay Styling ── */
+#mobile-restriction-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: rgba(3, 8, 16, 0.98);
+    color: var(--accent, #00e5ff);
+    font-family: var(--font-terminal, 'Courier New', Courier, monospace);
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#mobile-restriction-overlay .restriction-box {
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    background: rgba(6, 12, 20, 0.95);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.15), inset 0 0 15px rgba(0, 229, 255, 0.05);
+    padding: 2.5rem 1.5rem;
+    border-radius: 8px;
+    max-width: 420px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+#mobile-restriction-overlay .restriction-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    color: #ff3b30;
+    text-shadow: 0 0 8px rgba(255, 59, 48, 0.6);
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.1em;
+}
+
+#mobile-restriction-overlay .warning-icon {
+    font-size: 1.4rem;
+}
+
+#mobile-restriction-overlay .restriction-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+}
+
+#mobile-restriction-overlay .restriction-content p {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+    color: var(--accent-dim, rgba(0, 229, 255, 0.7));
+}
+
+#mobile-restriction-overlay .restriction-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    margin-top: 2rem;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+#mobile-restriction-overlay .blinking-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff3b30;
+    animation: blink-red 1s infinite alternate;
+    box-shadow: 0 0 6px #ff3b30;
+}
+
+#mobile-restriction-overlay .scanner-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation: scan-line 3s linear infinite;
+    opacity: 0.4;
+}
+
+@keyframes blink-red {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+}
+
+@keyframes scan-line {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
 
 /* ── Tablet (≤ 1024px) ── */
 @media (max-width: 1024px) {
@@ -100,8 +196,20 @@
     }
 }
 
-/* ── Mobile (≤ 768px) ── */
-@media (max-width: 768px) {
+/* ── Mobile Screen Restriction (≤ 767px) ── */
+@media (max-width: 767px) {
+    #mobile-restriction-overlay {
+        display: flex !important;
+    }
+    #main-ui, 
+    #boot-screen, 
+    #mike-orb, 
+    #mike-ai-modal, 
+    #lightbox, 
+    .name-modal-overlay {
+        display: none !important;
+    }
+
     :root {
         --panel-padding: 0.8rem;
     }
@@ -215,6 +323,30 @@
     #bottom-bar .footer-right {
         gap: 0.8rem;
     }
+
+    /* AI Orb Button & Modal responsive overrides */
+    .mike-orb-button {
+        z-index: 9999 !important;
+        bottom: 20px;
+        right: 20px;
+    }
+    .mike-modal-container {
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        bottom: auto !important;
+        right: auto !important;
+        width: 92% !important;
+        max-width: 380px !important;
+        height: 65vh !important;
+        max-height: 480px !important;
+        z-index: 10000 !important;
+    }
+    .mike-modal-container.hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: translate(-50%, -40%) scale(0.92) !important;
+    }
 }
 
 /* ── Small Mobile (≤ 480px) ── */
@@ -252,6 +384,18 @@
 
     #section-achievements .stat-number {
         font-size: 1.1rem;
+    }
+
+    /* Small mobile AI Orb tweaks */
+    .mike-orb-button {
+        width: 48px !important;
+        height: 48px !important;
+        bottom: 15px !important;
+        right: 15px !important;
+    }
+    #mike-audio-canvas {
+        width: 44px !important;
+        height: 44px !important;
     }
 }
 
